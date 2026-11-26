@@ -1,5 +1,7 @@
 # 🤖 AI 奇妙漫游指南 · AI Adventure Guide (2026 互动版)
 
+> 🌐 **在线直接游玩**：https://studypythonhardly.github.io/ai-adventure-guide/
+
 一个面向普通计算机小白的**从 0 开始互动式 AI 入门教程**，全程采用 **ELI5（Explain Like I'm 5）大白话规范**，通过游戏化闯关、实时交互实验、3D WebGL 渲染与零代码造物沙盒，帮助读者全面理解 AI 原理、掌握 2026 前沿 AI 生态并亲手用 AI 做出作品。
 
 ## ✨ 核心功能亮点
