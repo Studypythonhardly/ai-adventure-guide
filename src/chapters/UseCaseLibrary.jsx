@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { USE_CASE_CATEGORIES, USE_CASES } from '../data/useCasesData'
+import { copyText } from '../lib/browser'
 import { Search, Copy, Check, Star, ChevronDown, ChevronUp, Sparkles } from 'lucide-react'
 
 const FAV_STORAGE_KEY = 'ai_adventure_fav_cases_v1'
@@ -35,18 +36,10 @@ export function UseCaseLibrary() {
   }
 
   const handleCopyPrompt = async (id, text) => {
-    try {
-      await navigator.clipboard.writeText(text)
-    } catch {
-      const ta = document.createElement('textarea')
-      ta.value = text
-      document.body.appendChild(ta)
-      ta.select()
-      document.execCommand('copy')
-      ta.remove()
+    if (await copyText(text)) {
+      setCopiedId(id)
+      setTimeout(() => setCopiedId(null), 1800)
     }
-    setCopiedId(id)
-    setTimeout(() => setCopiedId(null), 1800)
   }
 
   const filteredCases = useMemo(() => {
@@ -70,14 +63,14 @@ export function UseCaseLibrary() {
       {/* Header Banner */}
       <section className="card-playful p-6 sm:p-8 bg-gradient-to-br from-[#FEF6E4] via-[#FFFFFF] to-[#E8FBF3] space-y-3">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1E1B2E] text-white text-xs font-black">
-          <Sparkles className="w-3.5 h-3.5 text-[#FDE047]" /> 随查随用 · 永久收藏夹（共 {USE_CASES.length} 个真实生活场景）
+          <Sparkles className="w-3.5 h-3.5 text-[#FDE047]" aria-hidden="true" /> 随查随用 · 永久收藏夹（共 {USE_CASES.length} 个真实生活场景）
         </div>
         <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">
-          🧰 AI 实战案例库：下次遇到事，来这搜一下就知道 AI 能不能帮！
+          🧰 AI 实战案例库：遇到事来这搜一下，看看 AI 怎么帮上忙
         </h1>
         <p className="text-sm sm:text-base text-[#45405C] leading-relaxed max-w-3xl">
-          很多人学完 AI 还是想不起来用，不是因为不会，而是<strong>没想到“原来这件事也能交给 AI 干”</strong>！
-          这里收录了普通人与各岗位日常最高频的 {USE_CASES.length} 个实战案例，每个都附带<strong>推荐工具 + 一键复制就能用的现成咒语</strong>，遇到问题直接来抄作业！
+          很多人学完 AI 还是想不起来用，不是因为不会，而是<strong>没想到“原来这件事也能让 AI 先打个草稿”</strong>！
+          这里收录了日常与工作最高频的 {USE_CASES.length} 个场景，每个都附带<strong>推荐工具 + 一键复制的提示词模板</strong>（记得把涉及隐私的真名和数字先替换脱敏哦）。
         </p>
       </section>
 
@@ -85,9 +78,13 @@ export function UseCaseLibrary() {
       <section className="card-playful p-4 sm:p-5 space-y-4">
         <div className="flex flex-col md:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-[#8E89A6] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <label htmlFor="case-search" className="sr-only">
+              搜索实战案例
+            </label>
+            <Search className="w-4 h-4 text-[#6B6685] absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
             <input
-              type="text"
+              id="case-search"
+              type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="搜你想解决的事（如：周报、合同、Excel、体检、旅游、买手机、辅导作业、猫）..."
@@ -95,23 +92,27 @@ export function UseCaseLibrary() {
             />
           </div>
           <button
+            type="button"
             onClick={() => setOnlyFavs((v) => !v)}
+            aria-pressed={onlyFavs}
             className={`px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-black inline-flex items-center justify-center gap-1.5 cursor-pointer shrink-0 transition-all ${
               onlyFavs
-                ? 'bg-[#F59E0B] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
+                ? 'bg-[#B45309] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
                 : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/25 hover:border-[#1E1B2E]'
             }`}
           >
-            <Star className={`w-4 h-4 ${onlyFavs ? 'fill-current' : ''}`} />
+            <Star className={`w-4 h-4 ${onlyFavs ? 'fill-current' : ''}`} aria-hidden="true" />
             <span>我的收藏 ({favorites.length})</span>
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2" role="group" aria-label="场景分类">
           {USE_CASE_CATEGORIES.map((cat) => (
             <button
+              type="button"
               key={cat.id}
               onClick={() => setCategory(cat.id)}
+              aria-pressed={category === cat.id}
               className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 cursor-pointer transition-all ${
                 category === cat.id
                   ? 'bg-[#5B4BFF] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
@@ -127,13 +128,13 @@ export function UseCaseLibrary() {
       {/* Case Cards Grid */}
       {filteredCases.length === 0 ? (
         <div className="card-playful p-10 text-center space-y-2">
-          <div className="text-4xl">🔍</div>
+          <div className="text-4xl" aria-hidden="true">🔍</div>
           <div className="font-black text-base text-[#1E1B2E]">
             {onlyFavs ? '你还没有收藏任何案例哦！' : '暂时没搜到这个关键词'}
           </div>
           <p className="text-xs sm:text-sm text-[#595470]">
             {onlyFavs
-              ? '点一下任意案例右上角的“⭐ 收藏”，下次来就能一秒找到啦！'
+              ? '点一下任意案例右上角的星标按钮，下次来就能一秒找到啦！'
               : '试试换个更简短的词（比如“合同”“英语”“减肥”“表格”），或者点“全部场景”逛逛！'}
           </p>
         </div>
@@ -144,7 +145,7 @@ export function UseCaseLibrary() {
             const isOpen = expandedId === item.id
             const isCopied = copiedId === item.id
             return (
-              <div
+              <article
                 key={item.id}
                 className="card-playful p-5 flex flex-col justify-between space-y-4"
               >
@@ -152,29 +153,35 @@ export function UseCaseLibrary() {
                   {/* Top row */}
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2.5">
-                      <span className="w-11 h-11 rounded-2xl bg-[#FFFBF5] border-2 border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E] flex items-center justify-center text-2xl shrink-0">
+                      <span
+                        className="w-11 h-11 rounded-2xl bg-[#FFFBF5] border-2 border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E] flex items-center justify-center text-2xl shrink-0"
+                        aria-hidden="true"
+                      >
                         {item.emoji}
                       </span>
                       <div>
                         <span className="inline-block text-[11px] font-black px-2 py-0.5 rounded-full bg-[#E8FBF3] text-[#047857] border border-[#10B981]/40">
                           ⚡ {item.timeCompare}
                         </span>
-                        <h3 className="font-black text-base text-[#1E1B2E] mt-1 leading-snug">
+                        <h2 className="font-black text-base text-[#1E1B2E] mt-1 leading-snug">
                           {item.title}
-                        </h3>
+                        </h2>
                       </div>
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => toggleFav(item.id)}
+                      aria-pressed={isFav}
+                      aria-label={isFav ? `取消收藏：${item.title}` : `收藏案例：${item.title}`}
                       className={`p-2 rounded-xl border-2 cursor-pointer transition-all shrink-0 ${
                         isFav
-                          ? 'bg-[#FEF6E4] border-[#F59E0B] text-[#D97706]'
-                          : 'bg-white border-[#1E1B2E]/15 text-[#8E89A6] hover:border-[#1E1B2E]'
+                          ? 'bg-[#FEF6E4] border-[#F59E0B] text-[#B45309]'
+                          : 'bg-white border-[#1E1B2E]/15 text-[#6B6685] hover:border-[#1E1B2E]'
                       }`}
                       title={isFav ? '取消收藏' : '收藏常用案例'}
                     >
-                      <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} />
+                      <Star className={`w-4 h-4 ${isFav ? 'fill-current' : ''}`} aria-hidden="true" />
                     </button>
                   </div>
 
@@ -186,13 +193,13 @@ export function UseCaseLibrary() {
 
                   {/* Why AI really can do it */}
                   <div className="p-3.5 rounded-xl bg-[#EEF0FF]/70 border-2 border-[#5B4BFF]/20 text-xs sm:text-sm text-[#2D2A40] leading-relaxed">
-                    <strong>🤯 AI 真的能做到：</strong>
+                    <strong>💡 AI 怎么帮忙：</strong>
                     {item.wowProof}
                   </div>
 
                   {/* Recommended Tools */}
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-[11px] font-black text-[#595470]">推荐工具：</span>
+                    <span className="text-[11px] font-black text-[#595470]">适用工具：</span>
                     {item.tools.map((t) => (
                       <span
                         key={t}
@@ -208,25 +215,32 @@ export function UseCaseLibrary() {
                 <div className="pt-2 border-t border-[#1E1B2E]/10 space-y-2.5">
                   <div className="flex items-center justify-between gap-2">
                     <button
+                      type="button"
                       onClick={() => setExpandedId(isOpen ? null : item.id)}
+                      aria-expanded={isOpen}
                       className="text-xs font-black text-[#5B4BFF] hover:underline inline-flex items-center gap-1 cursor-pointer"
                     >
-                      <span>{isOpen ? '收起现成咒语模板' : '✨ 查看现成咒语（直接抄作业）'}</span>
-                      {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      <span>{isOpen ? '收起提示词模板' : '✨ 查看现成提示词模板'}</span>
+                      {isOpen ? (
+                        <ChevronUp className="w-4 h-4" aria-hidden="true" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4" aria-hidden="true" />
+                      )}
                     </button>
 
                     <button
+                      type="button"
                       onClick={() => handleCopyPrompt(item.id, item.prompt)}
                       className="btn-playful px-3 py-1.5 rounded-xl bg-[#1E1B2E] text-white text-xs font-black inline-flex items-center gap-1 cursor-pointer"
                     >
                       {isCopied ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-[#34D399]" />
+                          <Check className="w-3.5 h-3.5 text-[#34D399]" aria-hidden="true" />
                           <span>已复制！</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3.5 h-3.5" />
+                          <Copy className="w-3.5 h-3.5" aria-hidden="true" />
                           <span>一键复制咒语</span>
                         </>
                       )}
@@ -239,7 +253,7 @@ export function UseCaseLibrary() {
                     </pre>
                   )}
                 </div>
-              </div>
+              </article>
             )
           })}
         </div>
@@ -247,3 +261,5 @@ export function UseCaseLibrary() {
     </div>
   )
 }
+
+export default UseCaseLibrary

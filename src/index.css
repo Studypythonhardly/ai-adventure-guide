@@ -316,6 +316,44 @@ input[type="range"] {
   animation: gtaSpeedStreak 1.35s linear infinite;
 }
 
+/* Visible keyboard focus ring for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #5B4BFF;
+  outline-offset: 2px;
+}
 
+/* Respect user system setting: Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
+/* Clean single-page Graduation Certificate printing */
+@media print {
+  body {
+    background: #FFFFFF !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-section {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .print-certificate {
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+}
 

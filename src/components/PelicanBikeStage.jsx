@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Play, Pause, Code2, Sparkles, Rotate3d } from 'lucide-react'
-import { Pelican3DCanvas } from './Pelican3DCanvas'
+import { lazy, Suspense, useState, useEffect } from 'react'
+import { Play, Pause, Code2, Sparkles, Rotate3d, Layers } from 'lucide-react'
+import { prefersReducedMotion } from '../lib/browser'
+
+const Pelican3DCanvas = lazy(() => import('./Pelican3DCanvas'))
 
 const ERAS = [
   {
@@ -41,6 +43,8 @@ export function PelicanBikeStage() {
   const [showCode, setShowCode] = useState(false)
   const [turbo, setTurbo] = useState(false)
   const [cameraPreset, setCameraPreset] = useState('hero')
+  const [render3D, setRender3D] = useState(() => !prefersReducedMotion())
+  const [webglFailed, setWebglFailed] = useState(false)
 
   useEffect(() => {
     if (!autoPlay) return
@@ -51,44 +55,49 @@ export function PelicanBikeStage() {
   }, [autoPlay])
 
   const era = ERAS[eraIdx]
+  const use3D = era.id === '2026' && render3D && !webglFailed
 
   return (
     <section className="card-playful p-5 sm:p-7 bg-gradient-to-br from-[#E8F6FE] via-[#FFFFFF] to-[#FEF6E4] space-y-5">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#0EA5E9] text-white text-xs font-black badge-pill mb-1.5">
-            <Sparkles className="w-3.5 h-3.5" /> AI 圈最火趣味测试 · 互动动画
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#0284C7] text-white text-xs font-black badge-pill mb-1.5">
+            <Sparkles className="w-3.5 h-3.5" aria-hidden="true" /> AI 圈经典趣味测试 · 互动动画
           </span>
           <h2 className="text-xl sm:text-2xl font-black text-[#1E1B2E]">
-            🚲 著名的“鹈鹕骑单车”进化史！
+            🚲 著名的“鹈鹕骑单车”进化史
           </h2>
           <p className="text-xs sm:text-sm text-[#45405C] mt-1">
-            全世界 AI 极客最爱考大模型一道奇葩题：<strong>“请用纯代码画一只骑自行车的鹈鹕！”</strong>
-            点击下方年份，亲眼看看 AI 是怎么在 3 年间从“灵魂画手”进化成“动画大师”的！
+            开发者 Simon Willison 常考新模型一道趣味题：<strong>“请用纯代码画一只骑自行车的鹈鹕！”</strong>
+            点击下方年份，对比不同时期模型写图形代码的能力差异（注：下方为教学复刻示意）：
           </p>
         </div>
 
         <button
+          type="button"
           onClick={() => setAutoPlay((v) => !v)}
+          aria-pressed={autoPlay}
           className={`btn-playful px-4 py-2.5 rounded-xl text-xs font-black inline-flex items-center gap-1.5 cursor-pointer shrink-0 ${
             autoPlay ? 'bg-[#FF6B57] text-white' : 'bg-[#5B4BFF] text-white'
           }`}
         >
-          {autoPlay ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+          {autoPlay ? <Pause className="w-4 h-4" aria-hidden="true" /> : <Play className="w-4 h-4" aria-hidden="true" />}
           <span>{autoPlay ? '暂停进化轮播' : '自动播放进化史'}</span>
         </button>
       </div>
 
       {/* Era Switcher Tabs */}
-      <div className="grid grid-cols-3 gap-2.5">
+      <div className="grid grid-cols-3 gap-2.5" role="group" aria-label="年份切换">
         {ERAS.map((item, idx) => (
           <button
+            type="button"
             key={item.id}
             onClick={() => {
               setAutoPlay(false)
               setEraIdx(idx)
             }}
+            aria-pressed={eraIdx === idx}
             className={`p-3 rounded-2xl border-2 text-left cursor-pointer transition-all ${
               eraIdx === idx
                 ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[3px_3px_0_#0EA5E9]'
@@ -105,14 +114,16 @@ export function PelicanBikeStage() {
 
       {/* Animated 2D / 3D Canvas */}
       <div className="rounded-3xl border-3 border-[#1E1B2E] shadow-[5px_5px_0_#1E1B2E] overflow-hidden bg-gradient-to-b from-[#DBEAFE] via-[#EFF6FF] to-[#FEF9C3] relative">
-        <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-2">
+        <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-2 pr-28">
           <div className="px-3 py-1 rounded-full bg-white/95 border-2 border-[#1E1B2E] text-xs font-black text-[#1E1B2E]">
-            AI 脑力评分：<span style={{ color: era.color }}>{era.score}</span>
+            完成度示意：<span style={{ color: era.color }}>{era.score}</span>
           </div>
           {era.id === '2026' && (
             <>
               <button
+                type="button"
                 onClick={() => setTurbo((t) => !t)}
+                aria-pressed={turbo}
                 className={`px-3 py-1 rounded-full border-2 border-[#1E1B2E] text-xs font-black cursor-pointer transition-all ${
                   turbo
                     ? 'bg-[#FF6B57] text-white shadow-[2px_2px_0_#1E1B2E]'
@@ -121,36 +132,64 @@ export function PelicanBikeStage() {
               >
                 {turbo ? '🔥 冲刺加速中！' : '⚡ 加速冲刺'}
               </button>
-              <button
-                onClick={() =>
-                  setCameraPreset((p) => (p === 'hero' ? 'side' : p === 'side' ? 'front' : 'hero'))
-                }
-                className="px-3 py-1 rounded-full bg-white/95 hover:bg-[#EEF0FF] border-2 border-[#1E1B2E] text-xs font-black text-[#1E1B2E] inline-flex items-center gap-1 cursor-pointer"
-              >
-                <Rotate3d className="w-3.5 h-3.5 text-[#5B4BFF]" />
-                <span>切换 3D 机位</span>
-              </button>
+              {use3D && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCameraPreset((p) => (p === 'hero' ? 'side' : p === 'side' ? 'front' : 'hero'))
+                  }
+                  className="px-3 py-1 rounded-full bg-white/95 hover:bg-[#EEF0FF] border-2 border-[#1E1B2E] text-xs font-black text-[#1E1B2E] inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <Rotate3d className="w-3.5 h-3.5 text-[#5B4BFF]" aria-hidden="true" />
+                  <span>切换 3D 机位</span>
+                </button>
+              )}
+              {!webglFailed && (
+                <button
+                  type="button"
+                  onClick={() => setRender3D((v) => !v)}
+                  aria-pressed={!render3D}
+                  className="px-3 py-1 rounded-full bg-white/95 hover:bg-[#EEF0FF] border-2 border-[#1E1B2E] text-xs font-black text-[#1E1B2E] inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <Layers className="w-3.5 h-3.5 text-[#0284C7]" aria-hidden="true" />
+                  <span>{render3D ? '切到 2D 轻量版' : '切回 3D 渲染'}</span>
+                </button>
+              )}
             </>
           )}
         </div>
 
         <button
+          type="button"
           onClick={() => setShowCode((s) => !s)}
+          aria-expanded={showCode}
           className="absolute top-3 right-3 z-10 px-3 py-1 rounded-full bg-[#1E1B2E] text-white text-xs font-bold inline-flex items-center gap-1 cursor-pointer hover:bg-[#5B4BFF] transition-colors"
         >
-          <Code2 className="w-3.5 h-3.5" />
-          <span>{showCode ? '收起代码' : '偷看 GLSL/3D 代码'}</span>
+          <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
+          <span>{showCode ? '收起代码' : '偷看代码片段'}</span>
         </button>
 
-        {era.id === '2026' ? (
+        {use3D ? (
           <div className="relative bg-[#160F29]">
-            <Pelican3DCanvas turbo={turbo} cameraPreset={cameraPreset} />
+            <Suspense
+              fallback={
+                <div className="w-full h-80 sm:h-96 flex items-center justify-center text-white text-xs font-bold">
+                  🌴 正在启动 3D 渲染引擎...
+                </div>
+              }
+            >
+              <Pelican3DCanvas
+                turbo={turbo}
+                cameraPreset={cameraPreset}
+                onError={() => setWebglFailed(true)}
+              />
+            </Suspense>
             <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-[#1E1B2E]/80 text-white text-[11px] font-bold backdrop-blur-sm whitespace-nowrap">
               🌴 100% 纯代码 WebGL + GLSL 实时渲染 · 鼠标拖拽 360° 旋转 · 滚轮缩放
             </div>
           </div>
         ) : (
-        <svg viewBox="0 0 560 270" className="w-full h-60 sm:h-72 block select-none">
+        <svg viewBox="0 0 560 270" className="w-full h-60 sm:h-72 block select-none" role="img" aria-label={`${era.year}鹈鹕骑单车矢量示意动画`}>
           <defs>
             <linearGradient id="sky2026" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#60A5FA" />
@@ -459,7 +498,11 @@ export function PelicanBikeStage() {
         </div>
         {showCode && (
           <pre className="mt-2 p-3 rounded-xl bg-[#1E1B2E] text-[#A5B4FC] text-xs font-mono overflow-x-auto animate-pop">
-            {`<!-- AI 并不是拿画笔画的，而是像写作文一样吐出这串 SVG 坐标代码！ -->\n${era.codeSnippet}`}
+            {`${
+              era.id === '2026'
+                ? '// AI 不是拿画笔画图，而是直接写出下面这样的着色器与 3D 几何代码：'
+                : '<!-- AI 不是拿画笔画图，而是像写作文一样输出这串 SVG 坐标代码： -->'
+            }\n${era.codeSnippet}`}
           </pre>
         )}
       </div>

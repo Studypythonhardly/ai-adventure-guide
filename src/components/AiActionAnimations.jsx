@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Play, Pause, Layers, ArrowRight } from 'lucide-react'
 
 const SCENES = [
@@ -75,25 +75,29 @@ export function AiActionAnimations() {
         </div>
 
         <button
+          type="button"
           onClick={() => setAutoPlay((v) => !v)}
+          aria-pressed={autoPlay}
           className={`btn-playful px-4 py-2 rounded-xl text-xs font-black inline-flex items-center gap-1.5 cursor-pointer shrink-0 ${
             autoPlay ? 'bg-[#FF6B57] text-white' : 'bg-[#1E1B2E] text-white'
           }`}
         >
-          {autoPlay ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+          {autoPlay ? <Pause className="w-3.5 h-3.5" aria-hidden="true" /> : <Play className="w-3.5 h-3.5" aria-hidden="true" />}
           <span>{autoPlay ? '暂停演示轮播' : '自动轮播演示'}</span>
         </button>
       </div>
 
       {/* Formal Segmented Tabs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5" role="group" aria-label="工作流场景切换">
         {SCENES.map((s, idx) => (
           <button
+            type="button"
             key={s.id}
             onClick={() => {
               setAutoPlay(false)
               setSceneIdx(idx)
             }}
+            aria-pressed={sceneIdx === idx}
             className={`px-3.5 py-2.5 rounded-xl border-2 text-left cursor-pointer transition-all ${
               sceneIdx === idx
                 ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[3px_3px_0_#6366F1]'
@@ -129,7 +133,7 @@ export function AiActionAnimations() {
             </span>
           </div>
 
-          <svg viewBox="0 0 540 260" className="w-full h-56 sm:h-64 block select-none">
+          <svg viewBox="0 0 540 260" className="w-full h-56 sm:h-64 block select-none" role="img" aria-label={`${scene.title}工作流示意图`}>
             <defs>
               <pattern id="techGrid" width="24" height="24" patternUnits="userSpaceOnUse">
                 <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#334155" strokeWidth="0.6" opacity="0.45" />

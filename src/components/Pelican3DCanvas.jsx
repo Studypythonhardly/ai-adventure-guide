@@ -1,23 +1,29 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import { prefersReducedMotion } from '../lib/browser'
 
 /**
- * 100% 纯代码实时渲染（零图片贴图）：GTA 罪恶都市落日海岸风格 3D 鹈鹕骑单车
+ * 100% 纯代码实时渲染（零图片贴图）：落日海岸风格 3D 鹈鹕骑单车
  * - 自定义 GLSL 落日渐变天空 + 实时动态海面波光着色器
- * - 弯曲摇曳的 3D 棕榈树、迈阿密天际线剪影、暖橙路灯与反光柏油海滨大道
- * - 戴飞行员墨镜的雕刻级 3D 鹈鹕 + 带前后车灯的碳纤维弯把公路车 + 膝关节 IK 蹬车
+ * - 弯曲摇曳的 3D 棕榈树、海岸天际线剪影、暖橙路灯与反光柏油海滨大道
+ * - 戴飞行员墨镜的 3D 鹈鹕 + 带前后车灯的碳纤维弯把公路车 + 膝关节 IK 蹬车
  */
-export function Pelican3DCanvas({ turbo = false, cameraPreset = 'hero' }) {
+export function Pelican3DCanvas({ turbo = false, cameraPreset = 'hero', onError }) {
   const containerRef = useRef(null)
   const turboRef = useRef(turbo)
+  const onErrorRef = useRef(onError)
   const cameraRef = useRef(null)
   const controlsRef = useRef(null)
 
   useEffect(() => {
     turboRef.current = turbo
   }, [turbo])
+
+  useEffect(() => {
+    onErrorRef.current = onError
+  }, [onError])
 
   useEffect(() => {
     const cam = cameraRef.current
@@ -52,10 +58,16 @@ export function Pelican3DCanvas({ turbo = false, cameraPreset = 'hero' }) {
     camera.position.set(3.45, 1.88, 5.55)
     cameraRef.current = camera
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      powerPreference: 'high-performance',
-    })
+    let renderer
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        powerPreference: 'high-performance',
+      })
+    } catch {
+      onErrorRef.current?.()
+      return undefined
+    }
     renderer.setSize(width, height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.shadowMap.enabled = true
@@ -690,12 +702,11 @@ export function Pelican3DCanvas({ turbo = false, cameraPreset = 'hero' }) {
     let rafId = 0
     let crankAngle = 0
     let elapsed = 0
+    const reducedMotion = prefersReducedMotion()
     const clock = new THREE.Clock()
 
-    const animate = () => {
-      rafId = requestAnimationFrame(animate)
-      const dt = Math.min(clock.getDelta(), 0.05)
-      const speed = turboRef.current ? 2.4 : 1.0
+    const stepScene = (dt) => {
+      const speed = reducedMotion ? 0 : turboRef.current ? 2.4 : 1.0
       elapsed += dt * speed
 
       oceanMat.uniforms.uTime.value = elapsed
@@ -733,11 +744,18 @@ export function Pelican3DCanvas({ turbo = false, cameraPreset = 'hero' }) {
           p.userData.crown.rotation.z = Math.sin(elapsed * 2.2 + p.position.x) * 0.05
         }
       })
+    }
 
+    const animate = () => {
+      rafId = requestAnimationFrame(animate)
+      const dt = Math.min(clock.getDelta(), 0.05)
+      stepScene(dt)
       controls.update()
       renderer.render(scene, camera)
     }
 
+    stepScene(0)
+    renderer.render(scene, camera)
     animate()
 
     const handleResize = () => {
@@ -751,22 +769,41 @@ export function Pelican3DCanvas({ turbo = false, cameraPreset = 'hero' }) {
       }
     }
     window.addEventListener('resize', handleResize)
+    const resizeObserver =
+      typeof ResizeObserver !== 'undefined' ? new ResizeObserver(handleResize) : null
+    resizeObserver?.observe(container)
 
     return () => {
       cancelAnimationFrame(rafId)
       window.removeEventListener('resize', handleResize)
+      resizeObserver?.disconnect()
       controls.dispose()
+      scene.traverse((obj) => {
+        if (obj.geometry) obj.geometry.dispose()
+        if (obj.material) {
+          const mats = Array.isArray(obj.material) ? obj.material : [obj.material]
+          mats.forEach((m) => {
+            if (m.map) m.map.dispose()
+            m.dispose()
+          })
+        }
+      })
       envTex.dispose()
       pmrem.dispose()
       renderer.dispose()
+      renderer.domElement.remove()
     }
   }, [])
 
   return (
     <div
       ref={containerRef}
+      role="img"
+      aria-label="纯代码实时渲染的 3D 鹈鹕骑自行车场景，可按住鼠标拖拽旋转视角"
       className="w-full h-80 sm:h-96 cursor-grab active:cursor-grabbing relative"
       title="100% 纯代码 WebGL 实时渲染 · 按住鼠标拖拽 360° 旋转"
     />
   )
 }
+
+export default Pelican3DCanvas
