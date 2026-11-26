@@ -1,0 +1,321 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+    background-color: #FFFBF5;
+    color: #1E1B2E;
+  }
+}
+
+/* Tactile playful card style (Duolingo / editorial-meets-game feel) */
+.card-playful {
+  background: #FFFFFF;
+  border: 2px solid #1E1B2E;
+  box-shadow: 4px 4px 0px #1E1B2E;
+  border-radius: 1.25rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-playful-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #1E1B2E;
+}
+
+.btn-playful {
+  border: 2px solid #1E1B2E;
+  box-shadow: 3px 3px 0px #1E1B2E;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+}
+
+.btn-playful:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px #1E1B2E;
+}
+
+.btn-playful:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #1E1B2E;
+}
+
+.badge-pill {
+  border: 1.5px solid #1E1B2E;
+  box-shadow: 2px 2px 0px #1E1B2E;
+}
+
+/* Subtle polka-dot playful background pattern */
+.bg-dots {
+  background-image: radial-gradient(#1E1B2E14 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+
+/* Custom range slider */
+input[type="range"] {
+  accent-color: #5B4BFF;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: floatSlow 3.5s ease-in-out infinite;
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.95) translateY(6px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-pop {
+  animation: popIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ===== Pelican & AI Case Showcase Animations ===== */
+@keyframes wheelSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bikeBounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes wobbleChaotic {
+  0%, 100% { transform: rotate(-6deg) translate(0px, 0px); }
+  50% { transform: rotate(7deg) translate(3px, -5px); }
+}
+
+@keyframes roadScroll {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -48; }
+}
+
+@keyframes cloudDrift {
+  0% { transform: translateX(0px); }
+  100% { transform: translateX(-180px); }
+}
+
+@keyframes scarfWave {
+  0%, 100% { transform: skewY(0deg) scaleX(1); }
+  50% { transform: skewY(-6deg) scaleX(1.06); }
+}
+
+@keyframes scanSweep {
+  0% { transform: translateY(0px); opacity: 0.9; }
+  50% { transform: translateY(112px); opacity: 1; }
+  100% { transform: translateY(0px); opacity: 0.9; }
+}
+
+@keyframes cursorPath {
+  0%, 100% { transform: translate(0px, 0px); }
+  30% { transform: translate(105px, 14px); }
+  65% { transform: translate(210px, -6px); }
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50% { transform: translateY(-7px) rotate(3deg); }
+}
+
+@keyframes waveSlide {
+  from { transform: translateX(0px); }
+  to { transform: translateX(-40px); }
+}
+
+.anim-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wheelSpin 1.4s linear infinite;
+}
+
+.anim-wheel-slow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wheelSpin 2.8s linear infinite;
+}
+
+.anim-bike-bounce {
+  animation: bikeBounce 0.7s ease-in-out infinite;
+}
+
+.anim-wobble {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wobbleChaotic 1.1s ease-in-out infinite;
+}
+
+.anim-road {
+  animation: roadScroll 0.8s linear infinite;
+}
+
+.anim-cloud {
+  animation: cloudDrift 12s linear infinite;
+}
+
+.anim-scarf {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: scarfWave 0.6s ease-in-out infinite;
+}
+
+.anim-scan {
+  animation: scanSweep 2.4s ease-in-out infinite;
+}
+
+.anim-cursor {
+  animation: cursorPath 3.6s ease-in-out infinite;
+}
+
+.anim-surf {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: floatBob 1.8s ease-in-out infinite;
+}
+
+.anim-wave {
+  animation: waveSlide 2.2s linear infinite;
+}
+
+@keyframes sceneryScroll {
+  from { transform: translateX(0px); }
+  to { transform: translateX(-280px); }
+}
+
+@keyframes pedalOrbit {
+  0%   { transform: translate(0px, -9px); }
+  25%  { transform: translate(9px, 0px); }
+  50%  { transform: translate(0px, 9px); }
+  75%  { transform: translate(-9px, 0px); }
+  100% { transform: translate(0px, -9px); }
+}
+
+@keyframes wingFlap {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-4deg); }
+}
+
+.anim-scenery {
+  animation: sceneryScroll 4.5s linear infinite;
+}
+
+.anim-scenery-fast {
+  animation: sceneryScroll 1.8s linear infinite;
+}
+
+.anim-wheel-fast {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wheelSpin 0.55s linear infinite;
+}
+
+.anim-pedal {
+  animation: pedalOrbit 1.4s linear infinite;
+}
+
+.anim-pedal-fast {
+  animation: pedalOrbit 0.55s linear infinite;
+}
+
+.anim-wing {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: wingFlap 0.9s ease-in-out infinite;
+}
+
+@keyframes dashFlow {
+  from { stroke-dashoffset: 32; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes barPulse {
+  0%, 100% { transform: scaleY(0.82); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes softPulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.06); }
+}
+
+@keyframes slideLine {
+  0% { opacity: 0.25; transform: translateX(-6px); }
+  50% { opacity: 1; transform: translateX(0px); }
+  100% { opacity: 0.25; transform: translateX(-6px); }
+}
+
+.anim-dash-flow {
+  stroke-dasharray: 8 8;
+  animation: dashFlow 1.2s linear infinite;
+}
+
+.anim-bar-1 {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: barPulse 2.2s ease-in-out infinite;
+}
+
+.anim-bar-2 {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: barPulse 2.2s ease-in-out 0.35s infinite;
+}
+
+.anim-bar-3 {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: barPulse 2.2s ease-in-out 0.7s infinite;
+}
+
+.anim-bar-4 {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: barPulse 2.2s ease-in-out 1.05s infinite;
+}
+
+.anim-hub-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: softPulse 2.4s ease-in-out infinite;
+}
+
+.anim-slide-line {
+  animation: slideLine 2.4s ease-in-out infinite;
+}
+
+/* ===== GTA Loading-Screen Cinematic Motion ===== */
+@keyframes gtaCameraDrift {
+  0%   { transform: scale(1.06) translate3d(-1.5%, 0.5%, 0); }
+  50%  { transform: scale(1.13) translate3d(1.8%, -1.0%, 0); }
+  100% { transform: scale(1.06) translate3d(-1.5%, 0.5%, 0); }
+}
+
+@keyframes gtaFlareSweep {
+  0%, 100% { opacity: 0.35; transform: translateX(-8%) scale(1); }
+  50%      { opacity: 0.72; transform: translateX(6%) scale(1.12); }
+}
+
+@keyframes gtaSpeedStreak {
+  0%   { transform: translateX(120%); opacity: 0; }
+  20%  { opacity: 0.85; }
+  80%  { opacity: 0.6; }
+  100% { transform: translateX(-140%); opacity: 0; }
+}
+
+.anim-gta-drift {
+  animation: gtaCameraDrift 11s ease-in-out infinite;
+}
+
+.anim-gta-flare {
+  animation: gtaFlareSweep 6.5s ease-in-out infinite;
+}
+
+.anim-gta-streak {
+  animation: gtaSpeedStreak 1.35s linear infinite;
+}
+
+
+
+
