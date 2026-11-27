@@ -51,8 +51,8 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
       : { text: '🔥 脑洞放飞模式（冷门词也有机会被抽中，灵感多但更容易跑题！）', color: '#C83726' }
 
   const missions = [
-    { id: 'rolled', label: '在实验 1A 里点一次“让 AI 掷骰子猜下一个词”', done: Boolean(flags.rolled) },
-    { id: 'tokenized', label: '在实验 1B 切词机里输入或切换一句测试文字', done: Boolean(flags.tokenized) },
+    { id: 'rolled', label: '在“词语接龙透视镜”里点一次掷骰子', done: Boolean(flags.rolled) },
+    { id: 'tokenized', label: '在“AI 怎么看字”里输入或点选一句测试文字', done: Boolean(flags.tokenized) },
     { id: 'quiz', label: '答对底部的“温度与幻觉”通关小测', done: Boolean(flags.quiz) },
   ]
 
@@ -72,7 +72,7 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
       <SectionJumpBar
         items={[
           { id: 'ch1-lab-token', label: '🎲 词语接龙与温度' },
-          { id: 'ch1-lab-lego', label: '✂️ 乐高切词机' },
+          { id: 'ch1-lab-lego', label: '✂️ AI 怎么看字 (Token)' },
           { id: 'chapter-footer', label: '✅ 通关任务' },
         ]}
         missions={missions}
@@ -221,15 +221,20 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
         </div>
       </section>
 
-      {/* Interactive Lab 1B: Token Lego Machine */}
+      {/* Interactive Lab 1B: How AI Counts Text (Token) */}
       <section id="ch1-lab-lego" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-5">
-        <h2 className="text-xl font-black text-[#1E1B2E] flex items-center gap-2">
-          <Scissors className="w-5 h-5 text-[#10B981]" aria-hidden="true" /> 乐高切词机 · Token 词元实验
-        </h2>
+        <div className="space-y-2">
+          <h2 className="text-xl font-black text-[#1E1B2E] flex items-center gap-2">
+            <Scissors className="w-5 h-5 text-[#10B981]" aria-hidden="true" /> AI 怎么“看字”、怎么算钱？（秒懂 Token）
+          </h2>
+          <p className="text-sm text-[#45405C] leading-relaxed">
+            我们数文章按“字数”，但 AI 读句子时会先把话切成一个个<strong>小词块（行话叫 Token）</strong>——就像打电话按<strong>分钟</strong>算钱，AI 的收费标准和一次能记住多少内容，全按它一共读了多少块来算！
+          </p>
+        </div>
 
         <div className="space-y-3">
           <label htmlFor="token-input" className="sr-only">
-            输入要体验切词的句子
+            输入要测试的句子
           </label>
           <input
             id="token-input"
@@ -239,13 +244,13 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
               setTokenInput(e.target.value)
               if (e.target.value.trim()) mark('tokenized')
             }}
-            placeholder="输入任何你想测试的中英文句子..."
+            placeholder="随便输入一句话，看看 AI 会把它切成几块..."
             className="w-full p-3.5 rounded-xl border-2 border-[#1E1B2E] bg-[#FFFBF5] text-base font-medium focus:outline-none focus:ring-2 focus:ring-[#5B4BFF]"
           />
           <div className="flex flex-wrap gap-2">
             {[
               '你好 AI，请给我讲个冷笑话！',
-              'Hello! Formal verification checks every step.',
+              'Hello! AI reads text in small chunks.',
               '今天不想上班，想变成一只晒太阳的橘猫 🐱',
             ].map((preset) => (
               <button
@@ -263,17 +268,17 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
           </div>
         </div>
 
-        {/* Lego Blocks Output */}
+        {/* Visual Chunk Output */}
         <div className="p-4 rounded-2xl bg-[#FFFBF5] border-2 border-dashed border-[#1E1B2E]/30 space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2 text-xs font-extrabold text-[#595470]">
-            <span>🧱 教学示意切分结果（真实模型用 BPE 分词，每家切法略有不同）：</span>
+            <span>你输入了 {tokenInput.length} 个字符 ➔ AI 眼里的切分结果：</span>
             <span className="px-2.5 py-1 rounded-full bg-[#1E1B2E] text-white">
-              示意 {tokens.length} 块 Token
+              约 {tokens.length} 个词块 (Token)
             </span>
           </div>
           <div className="flex flex-wrap gap-2">
             {tokens.length === 0 ? (
-              <span className="text-sm text-[#6B6685]">在上面随便打几个字，积木就会出现啦！</span>
+              <span className="text-sm text-[#6B6685]">在上面随便打几个字就能看到切分效果</span>
             ) : (
               tokens.map((tok, i) => (
                 <span
@@ -287,16 +292,12 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
               ))
             )}
           </div>
-          <p className="text-xs text-[#595470]">
-            💡 真实的分词器（如 OpenAI 的 tiktoken）会把高频词合成一块，把生僻字或表情符号拆成多个字节块；通常 1 个英文单词 ≈ 1~1.3 个 Token，1 个汉字 ≈ 0.6~2 个 Token。
-          </p>
         </div>
 
-        {/* Context Window Mini Comparison */}
+        {/* Context Window in Plain Language */}
         <div className="p-4 rounded-2xl bg-[#EEF0FF]/70 border-2 border-[#5B4BFF]/25 text-sm text-[#2D2A40] leading-relaxed">
-          <strong>🪑 顺手秒懂“上下文窗口（Context Window）”：</strong>
-          如果每个 Token 是一块积木，那“上下文窗口”就是 AI 面前的<strong>课桌大小</strong>！
-          早期 AI 的课桌只能摆几页纸，聊太长就会把开头挤掉忘光；现在的主流模型课桌能摆下十几万到上百万块积木，相当于一次读完几本厚书。不过课桌再大，塞太多无关杂物也会让 AI 分心哦！
+          <strong>🧠 顺手秒懂“记性容量（上下文窗口）”：</strong>
+          就是 AI 在一次聊天里最多能同时记住多少个词块。以前聊几十句它就会忘掉开头；现在主流 AI 一次能记住一整本书的长度。不过<strong>聊新话题时，还是建议新开一个对话窗口</strong>，免得旧聊天干扰它！
         </div>
       </section>
 
