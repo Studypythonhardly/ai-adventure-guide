@@ -101,7 +101,7 @@ export function PersonalBoardGuide({ onJumpToStudio }) {
               setRoundIdx(idx)
               if (!r.features.filter) setOnlyHigh(false)
             }}
-            className={`p-3 rounded-xl border-2 text-left cursor-pointer transition-all ${
+            className={`p-3 rounded-xl border-2 text-left cursor-pointer transition-colors transition-transform ${
               roundIdx === idx
                 ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[3px_3px_0_#5B4BFF]'
                 : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'

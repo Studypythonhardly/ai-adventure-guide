@@ -27,6 +27,18 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
 
   const [answers, setAnswers] = useState({})
   const [submitted, setSubmitted] = useState(false)
+  const [redactedFields, setRedactedFields] = useState([])
+
+  const sensitiveExcerpt = [
+    { id: 'name', label: '张晓梅', masked: '[姓名已打码]' },
+    { id: 'id', label: '110101199001011234', masked: '[身份证号已打码]' },
+    { id: 'phone', label: '13800138000', masked: '[手机号已打码]' },
+    { id: 'amount', label: '公司机密金额 1,280,000 元', masked: '[公司机密金额已打码]' },
+  ]
+
+  const toggleRedaction = (id) => {
+    setRedactedFields((current) => (current.includes(id) ? current : [...current, id]))
+  }
 
   const filteredTerms = useMemo(() => {
     return GLOSSARY_TERMS.filter((t) => {
@@ -86,7 +98,7 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
             role="tab"
             aria-selected={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black cursor-pointer transition-all ${
+            className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black cursor-pointer transition-colors transition-transform ${
               activeTab === tab.id
                 ? 'bg-[#1E1B2E] text-white shadow-[2px_2px_0_#0EA5E9]'
                 : 'bg-white text-[#1E1B2E] hover:bg-[#EEF0FF]'
@@ -109,7 +121,7 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
                   key={a.id}
                   onClick={() => setAudience(a.id)}
                   aria-pressed={audience === a.id}
-                  className={`px-3 py-1.5 rounded-xl border-2 text-xs font-black cursor-pointer transition-all ${
+                  className={`px-3 py-1.5 rounded-xl border-2 text-xs font-black cursor-pointer transition-colors transition-transform ${
                     audience === a.id
                       ? 'bg-[#5B4BFF] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
                       : 'bg-[#FFFBF5] text-[#1E1B2E] border-[#1E1B2E]/25 hover:border-[#1E1B2E]'
@@ -143,7 +155,7 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
                   key={c}
                   onClick={() => setCategory(c)}
                   aria-pressed={category === c}
-                  className={`px-3 py-2 rounded-xl text-xs font-extrabold border-2 cursor-pointer transition-all ${
+                  className={`px-3 py-2 rounded-xl text-xs font-extrabold border-2 cursor-pointer transition-colors transition-transform ${
                     category === c
                       ? 'bg-[#1E1B2E] text-white border-[#1E1B2E]'
                       : 'bg-white text-[#37334D] border-[#1E1B2E]/15 hover:border-[#1E1B2E]'
@@ -159,7 +171,7 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
             {filteredTerms.map((item) => (
               <article
                 key={item.id}
-                className="p-4 rounded-2xl bg-[#FFFBF5] border-2 border-[#1E1B2E]/20 hover:border-[#1E1B2E] transition-all space-y-2.5"
+                className="p-4 rounded-2xl bg-[#FFFBF5] border-2 border-[#1E1B2E]/20 hover:border-[#1E1B2E] transition-colors transition-transform space-y-2.5"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
@@ -218,6 +230,18 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
               </div>
             ))}
           </div>
+          <div className="card-playful p-5 space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold text-[#1A1A24]">隐私打码小演练</h3>
+              <p className="mt-1 text-sm text-[#525066] leading-relaxed">点击下面的敏感内容，把它们改成安全占位符。四处都处理完，再发给 AI。</p>
+            </div>
+            <div className="rounded-xl border border-[#1A1A24]/10 bg-[#F4F1EA] p-4 text-sm leading-loose text-[#525066]">
+              <p>体检与合同节选：员工 <button type="button" onClick={() => toggleRedaction('name')} className="font-semibold text-[#4338CA] underline underline-offset-2">{redactedFields.includes('name') ? '[姓名已打码]' : '张晓梅'}</button>，身份证号 <button type="button" onClick={() => toggleRedaction('id')} className="font-semibold text-[#4338CA] underline underline-offset-2">{redactedFields.includes('id') ? '[身份证号已打码]' : '110101199001011234'}</button>，联系电话 <button type="button" onClick={() => toggleRedaction('phone')} className="font-semibold text-[#4338CA] underline underline-offset-2">{redactedFields.includes('phone') ? '[手机号已打码]' : '13800138000'}</button>。本项目涉及 <button type="button" onClick={() => toggleRedaction('amount')} className="font-semibold text-[#4338CA] underline underline-offset-2">{redactedFields.includes('amount') ? '[公司机密金额已打码]' : '公司机密金额 1,280,000 元'}</button>。</p>
+            </div>
+            <div aria-live="polite" className={`rounded-xl border px-4 py-3 text-sm font-semibold ${redactedFields.length === sensitiveExcerpt.length ? 'border-[#059669]/30 bg-[#ECFDF5] text-[#047857]' : 'border-[#D97706]/20 bg-[#FFFBEB] text-[#92400E]'}`}>
+              {redactedFields.length === sensitiveExcerpt.length ? '安全！现在可以放心发给 AI 了' : `已处理 ${redactedFields.length}/${sensitiveExcerpt.length} 处敏感信息`}
+            </div>
+          </div>
         </section>
       )}
 
@@ -252,7 +276,7 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
                             if (!submitted) setAnswers((prev) => ({ ...prev, [q.id]: optIdx }))
                           }}
                           aria-pressed={isSelected}
-                          className={`w-full text-left px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-bold cursor-pointer transition-all flex items-center justify-between gap-2 ${
+                          className={`w-full text-left px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-bold cursor-pointer transition-colors transition-transform flex items-center justify-between gap-2 ${
                             showRight
                               ? 'bg-[#E8FBF3] border-[#10B981] text-[#065F46]'
                               : showWrong

@@ -115,7 +115,7 @@ export function AiActionAnimations({ onNavigate }) {
               role="tab"
               aria-selected={demoIdx === idx}
               onClick={() => handleSelectDemo(idx)}
-              className={`px-3.5 py-2 rounded-xl border-2 text-xs sm:text-sm font-black cursor-pointer transition-all ${
+              className={`px-3.5 py-2 rounded-xl border-2 text-xs sm:text-sm font-black cursor-pointer transition-colors transition-transform ${
                 demoIdx === idx
                   ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[2px_2px_0_#5B4BFF]'
                   : 'bg-[#FFFBF5] text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'
@@ -139,7 +139,7 @@ export function AiActionAnimations({ onNavigate }) {
       {/* 6-second Live Playback Bar */}
       <div className="h-1.5 w-full bg-[#F3F4F6] rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#5B4BFF] transition-all duration-100"
+          className="h-full bg-[#5B4BFF] transition-colors transition-transform duration-100"
           style={{ width: `${progressPct}%` }}
         />
       </div>
@@ -224,7 +224,7 @@ export function AiActionAnimations({ onNavigate }) {
               return (
                 <span
                   key={st}
-                  className={`text-[11px] font-bold px-2 py-0.5 rounded-full border transition-all ${
+                  className={`text-[11px] font-bold px-2 py-0.5 rounded-full border transition-colors transition-transform ${
                     reached
                       ? 'bg-[#E8FBF3] text-[#047857] border-[#10B981]'
                       : 'bg-white text-[#8E89A6] border-[#1E1B2E]/15'
@@ -316,7 +316,7 @@ export function AiActionAnimations({ onNavigate }) {
                         ].map((b) => (
                           <div key={b.d} className="flex flex-col items-center h-full justify-end gap-1">
                             <div
-                              className="w-full max-w-[36px] rounded-t-md transition-all duration-500"
+                              className="w-full max-w-[36px] rounded-t-md transition-colors transition-transform duration-500"
                               style={{ height: b.h, backgroundColor: b.c }}
                             />
                             <span className="text-[10px] text-white/75">{b.d}</span>
@@ -344,7 +344,7 @@ export function AiActionAnimations({ onNavigate }) {
                     </div>
                     <div className="h-2 bg-[#F3F4F6] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#10B981] transition-all duration-300"
+                        className="h-full bg-[#10B981] transition-colors transition-transform duration-300"
                         style={{ width: `${miniPct}%` }}
                       />
                     </div>

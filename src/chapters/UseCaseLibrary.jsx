@@ -96,7 +96,7 @@ export function UseCaseLibrary() {
             type="button"
             onClick={() => setOnlyFavs((v) => !v)}
             aria-pressed={onlyFavs}
-            className={`px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-black inline-flex items-center justify-center gap-1.5 cursor-pointer shrink-0 transition-all ${
+            className={`px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-black inline-flex items-center justify-center gap-1.5 cursor-pointer shrink-0 transition-colors transition-transform ${
               onlyFavs
                 ? 'bg-[#B45309] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
                 : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/25 hover:border-[#1E1B2E]'
@@ -114,7 +114,7 @@ export function UseCaseLibrary() {
               key={cat.id}
               onClick={() => setCategory(cat.id)}
               aria-pressed={category === cat.id}
-              className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 cursor-pointer transition-all ${
+              className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 cursor-pointer transition-colors transition-transform ${
                 category === cat.id
                   ? 'bg-[#5B4BFF] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
                   : 'bg-[#FFFBF5] text-[#1E1B2E] border-[#1E1B2E]/15 hover:border-[#1E1B2E]'
@@ -175,7 +175,7 @@ export function UseCaseLibrary() {
                       onClick={() => toggleFav(item.id)}
                       aria-pressed={isFav}
                       aria-label={isFav ? `取消收藏：${item.title}` : `收藏案例：${item.title}`}
-                      className={`p-2 rounded-xl border-2 cursor-pointer transition-all shrink-0 ${
+                      className={`p-2 rounded-xl border-2 cursor-pointer transition-colors transition-transform shrink-0 ${
                         isFav
                           ? 'bg-[#FEF6E4] border-[#F59E0B] text-[#B45309]'
                           : 'bg-white border-[#1E1B2E]/15 text-[#6B6685] hover:border-[#1E1B2E]'

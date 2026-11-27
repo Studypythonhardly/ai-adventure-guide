@@ -59,6 +59,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
   const [copied, setCopied] = useState(false)
   const [activeSkillId, setActiveSkillId] = useState('eli5')
   const [diagAnswers, setDiagAnswers] = useState({})
+  const [ragEnabled, setRagEnabled] = useState(false)
 
   const activeSkill = SKILL_CARTRIDGES.find((s) => s.id === activeSkillId) || SKILL_CARTRIDGES[0]
   const scenario = PROMPT_SCENARIOS[scenarioIdx]
@@ -126,6 +127,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
       <SectionJumpBar
         items={[
           { id: 'ch4-alchemy', label: '✨ 咒语炼金工坊' },
+          { id: 'ch4-rag', label: '📖 开卷 vs 闭卷' },
           { id: 'ch4-clinic', label: '🩺 咒语急诊室' },
           { id: 'ch4-skill', label: '🧩 AI 技能包' },
         ]}
@@ -156,7 +158,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
                   toggleAll(false)
                 }}
                 aria-pressed={scenarioIdx === i}
-                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 border-[#1E1B2E] cursor-pointer transition-all ${
+                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 border-[#1E1B2E] cursor-pointer transition-colors transition-transform ${
                   scenarioIdx === i
                     ? 'bg-[#8B5CF6] text-white shadow-[2px_2px_0_#1E1B2E]'
                     : 'bg-white text-[#1E1B2E] hover:bg-[#FFFBF5]'
@@ -199,7 +201,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
                   key={m.key}
                   onClick={() => toggleBlock(m.key)}
                   aria-pressed={on}
-                  className={`p-3.5 rounded-2xl border-2 text-left cursor-pointer transition-all ${
+                  className={`p-3.5 rounded-2xl border-2 text-left cursor-pointer transition-colors transition-transform ${
                     on
                       ? 'border-[#1E1B2E] text-white shadow-[3px_3px_0_#1E1B2E] -translate-y-0.5'
                       : 'border-[#1E1B2E]/20 bg-[#FFFBF5] text-[#1E1B2E] hover:border-[#1E1B2E]'
@@ -260,7 +262,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
 
           {/* AI Output */}
           <div
-            className={`p-4 sm:p-5 rounded-2xl border-2 transition-all space-y-2 ${
+            className={`p-4 sm:p-5 rounded-2xl border-2 transition-colors transition-transform space-y-2 ${
               outputLevel === 3
                 ? 'bg-[#E8FBF3] border-[#10B981]'
                 : outputLevel === 0
@@ -279,6 +281,38 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
             </pre>
           </div>
         </div>
+      </section>
+
+      <section id="ch4-rag" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1A1A24]">📖 开卷 vs 闭卷：30 秒看懂 RAG</h2>
+            <p className="mt-2 text-sm text-[#525066] leading-relaxed">同一个私人问题，唯一的区别是有没有把内部规定交给 AI 参考。</p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={ragEnabled}
+            onClick={() => setRagEnabled((value) => !value)}
+            className={`shrink-0 inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-semibold transition-colors ${ragEnabled ? 'bg-[#EEF2FF] text-[#3730A3] border-[#4338CA]/30' : 'bg-white text-[#525066] border-[#1A1A24]/15'}`}
+          >
+            <span className={`h-2.5 w-2.5 rounded-full ${ragEnabled ? 'bg-[#059669]' : 'bg-[#78758C]'}`} aria-hidden="true" />
+            {ragEnabled ? '已喂参考资料' : '喂 2 段内部规定'}
+          </button>
+        </div>
+        <div className="rounded-xl border border-[#1A1A24]/10 bg-[#F4F1EA] p-4 space-y-3">
+          <p className="text-sm font-semibold text-[#1A1A24]">问题：我们公司年假怎么请、报销上限是多少？</p>
+          {ragEnabled ? (
+            <div className="space-y-2 text-sm text-[#065F46] leading-relaxed">
+              <p>根据《员工手册》第 4.2 条，年假需提前 3 个工作日在 OA 提交申请，审批通过后才能休假。</p>
+              <p>根据《差旅报销规定》第 2.1 条，市内交通每次上限 80 元，住宿标准为每晚 450 元。</p>
+              <p className="text-xs font-semibold text-[#047857]">已按原文回答，并标出引用出处。</p>
+            </div>
+          ) : (
+            <p className="text-sm text-[#9A3412] leading-relaxed">我猜年假通常需要提前申请，报销上限可能按城市和职位不同。请先问问人事或翻一下公司制度。</p>
+          )}
+        </div>
+        <p className="text-xs text-[#78758C] leading-relaxed">关闭时是“闭卷回答”，只能凭经验猜。打开后是“开卷回答”，AI 会先查你提供的资料再作答，这就是 RAG 和个人知识库的基本思路。</p>
       </section>
 
       {/* Interactive Lab 4B: Prompt Diagnosis Clinic */}
@@ -307,7 +341,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
                         key={key}
                         onClick={() => handlePickDiag(item.id, key)}
                         aria-pressed={selected}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-black border-2 cursor-pointer transition-all ${
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-black border-2 cursor-pointer transition-colors transition-transform ${
                           selected
                             ? key === item.answer
                               ? 'bg-[#10B981] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
@@ -405,7 +439,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
                   if (sk.id !== 'eli5') mark('skill')
                 }}
                 aria-pressed={selected}
-                className={`p-3.5 rounded-2xl border-2 text-left cursor-pointer transition-all ${
+                className={`p-3.5 rounded-2xl border-2 text-left cursor-pointer transition-colors transition-transform ${
                   selected
                     ? 'text-white border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] -translate-y-0.5'
                     : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'

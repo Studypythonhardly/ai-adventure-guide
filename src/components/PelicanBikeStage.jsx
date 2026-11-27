@@ -98,7 +98,7 @@ export function PelicanBikeStage() {
               setEraIdx(idx)
             }}
             aria-pressed={eraIdx === idx}
-            className={`p-3 rounded-2xl border-2 text-left cursor-pointer transition-all ${
+            className={`p-3 rounded-2xl border-2 text-left cursor-pointer transition-colors transition-transform ${
               eraIdx === idx
                 ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[3px_3px_0_#0EA5E9]'
                 : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'
@@ -124,7 +124,7 @@ export function PelicanBikeStage() {
                 type="button"
                 onClick={() => setTurbo((t) => !t)}
                 aria-pressed={turbo}
-                className={`px-3 py-1 rounded-full border-2 border-[#1E1B2E] text-xs font-black cursor-pointer transition-all ${
+                className={`px-3 py-1 rounded-full border-2 border-[#1E1B2E] text-xs font-black cursor-pointer transition-colors transition-transform ${
                   turbo
                     ? 'bg-[#FF6B57] text-white shadow-[2px_2px_0_#1E1B2E]'
                     : 'bg-[#FEF6E4] text-[#92400E] hover:bg-[#FDE68A]'

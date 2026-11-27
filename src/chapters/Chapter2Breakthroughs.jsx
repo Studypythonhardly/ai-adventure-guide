@@ -102,7 +102,7 @@ export function Chapter2Breakthroughs({ isCompleted, onComplete, onNext }) {
                   if (item.step !== 0) mark('timeline')
                 }}
                 aria-pressed={timelineStep === item.step}
-                className={`p-2.5 rounded-xl border-2 text-left cursor-pointer transition-all ${
+                className={`p-2.5 rounded-xl border-2 text-left cursor-pointer transition-colors transition-transform ${
                   timelineStep === item.step
                     ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[2px_2px_0_#F59E0B]'
                     : 'bg-[#FFFBF5] text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'
@@ -281,7 +281,7 @@ export function Chapter2Breakthroughs({ isCompleted, onComplete, onNext }) {
                         key={opt.value}
                         onClick={() => handleSelectQuiz(q.id, opt.value)}
                         aria-pressed={selected}
-                        className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 cursor-pointer transition-all ${
+                        className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 cursor-pointer transition-colors transition-transform ${
                           selected
                             ? opt.value === q.answer
                               ? 'bg-[#10B981] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'

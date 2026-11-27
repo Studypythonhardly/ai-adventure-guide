@@ -150,13 +150,13 @@ export default function App() {
         aria-valuemax={100}
         aria-valuenow={progress.pct}
       >
-        <div className="h-full bg-[#10B981] transition-all duration-500" style={{ width: `${progress.pct}%` }} />
+        <div className="h-full bg-[#10B981] transition-colors transition-transform duration-500" style={{ width: `${progress.pct}%` }} />
       </div>
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-[#FFFBF5] bg-dots flex flex-col">
+    <div className="min-h-screen bg-[#FBF9F5] flex flex-col">
       <a
         href="#main-content"
         onClick={(e) => {
@@ -256,7 +256,7 @@ export default function App() {
                   key={ch.id}
                   onClick={() => handleNavigate(ch.id)}
                   aria-current={active ? 'page' : undefined}
-                  className={`w-full px-3 py-2.5 rounded-xl text-left flex items-center justify-between gap-2 transition-all cursor-pointer border-2 ${
+                  className={`w-full px-3 py-2.5 rounded-xl text-left flex items-center justify-between gap-2 transition-colors transition-transform cursor-pointer border-2 ${
                     active
                       ? 'bg-[#5B4BFF] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
                       : 'bg-transparent border-transparent hover:bg-white text-[#1E1B2E]'
@@ -284,7 +284,7 @@ export default function App() {
                 type="button"
                 onClick={() => handleNavigate('cases')}
                 aria-current={activeId === 'cases' ? 'page' : undefined}
-                className={`w-full px-3 py-2.5 rounded-xl text-left flex items-center justify-between gap-2 transition-all cursor-pointer border-2 ${
+                className={`w-full px-3 py-2.5 rounded-xl text-left flex items-center justify-between gap-2 transition-colors transition-transform cursor-pointer border-2 ${
                   activeId === 'cases'
                     ? 'bg-[#B45309] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
                     : 'bg-[#FEF6E4]/80 border-[#F59E0B]/40 hover:border-[#1E1B2E] text-[#1E1B2E]'

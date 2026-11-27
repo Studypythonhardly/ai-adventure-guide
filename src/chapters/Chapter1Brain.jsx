@@ -103,7 +103,7 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
                   setPickedResult(null)
                 }}
                 aria-pressed={scenarioIdx === i}
-                className={`px-3 py-1.5 rounded-xl text-xs font-extrabold border-2 border-[#1E1B2E] cursor-pointer transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-extrabold border-2 border-[#1E1B2E] cursor-pointer transition-colors transition-transform ${
                   scenarioIdx === i
                     ? 'bg-[#5B4BFF] text-white shadow-[2px_2px_0_#1E1B2E]'
                     : 'bg-white text-[#1E1B2E] hover:bg-[#FFFBF5]'
@@ -160,7 +160,7 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
             return (
               <div
                 key={item.word}
-                className={`p-3 rounded-xl border-2 transition-all ${
+                className={`p-3 rounded-xl border-2 transition-colors transition-transform ${
                   isPicked
                     ? 'border-[#5B4BFF] bg-[#EEF0FF] shadow-[2px_2px_0_#5B4BFF]'
                     : 'border-[#1E1B2E]/10 bg-white'
@@ -177,7 +177,7 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
                 </div>
                 <div className="w-full h-3 bg-[#F3F4F6] rounded-full overflow-hidden border border-[#1E1B2E]/15">
                   <div
-                    className="h-full rounded-full transition-all duration-300"
+                    className="h-full rounded-full transition-colors transition-transform duration-300"
                     style={{
                       width: `${Math.max(item.prob, 1.5)}%`,
                       backgroundColor: item.prob > 30 ? '#5B4BFF' : item.prob > 10 ? '#10B981' : '#FF6B57',

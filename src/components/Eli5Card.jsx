@@ -76,7 +76,7 @@ export function CheckpointQuiz({ quiz, onPass, passed, title = '🧠 通关小�
               type="button"
               onClick={() => handlePick(idx)}
               aria-pressed={selected}
-              className={`w-full text-left px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-bold cursor-pointer transition-all flex items-center justify-between gap-2 ${
+              className={`w-full text-left px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-bold cursor-pointer transition-colors transition-transform flex items-center justify-between gap-2 ${
                 right
                   ? 'bg-[#E8FBF3] border-[#10B981] text-[#065F46]'
                   : wrong
@@ -121,7 +121,7 @@ export function SectionJumpBar({ items = [], missions = [], isCompleted = false 
   const doneCount = isCompleted ? missions.length : missions.filter((m) => m.done).length
 
   return (
-    <div className="sticky top-[68px] z-20 -mx-1 px-3 py-2 rounded-2xl bg-[#FFFBF5]/95 backdrop-blur border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] flex flex-wrap items-center justify-between gap-2 no-print">
+    <div className="sticky top-[68px] z-20 -mx-1 px-3 py-2 rounded-xl bg-[#FBF9F5]/95 backdrop-blur border border-[#1A1A24]/10 shadow-[0_1px_2px_rgba(26,26,36,0.05)] flex flex-wrap items-center justify-between gap-2 no-print">
       <div className="flex flex-wrap items-center gap-1.5">
         {items.map((item) => (
           <button

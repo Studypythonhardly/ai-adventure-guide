@@ -43,6 +43,7 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
       <SectionJumpBar
         items={[
           { id: 'ch3-matchmaker', label: '🎯 帮我选 AI' },
+          { id: 'ch3-start', label: '💡 零成本起步' },
           { id: 'ch3-cards', label: '🃏 工具卡牌' },
           { id: 'chapter-footer', label: '✅ 通关任务' },
         ]}
@@ -75,7 +76,7 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
                 if (t.id !== MATCHMAKER_TASKS[0].id) mark('matchmaker')
               }}
               aria-pressed={selectedTask === t.id}
-              className={`p-3.5 rounded-xl border-2 text-left text-xs sm:text-sm font-extrabold cursor-pointer transition-all ${
+              className={`p-3.5 rounded-xl border-2 text-left text-xs sm:text-sm font-extrabold cursor-pointer transition-colors transition-transform ${
                 selectedTask === t.id
                   ? 'bg-[#5B4BFF] text-white border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E]'
                   : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'
@@ -104,6 +105,40 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
         )}
       </section>
 
+      <section id="ch3-start" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-5">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1A1A24]">💡 零成本起步指南</h2>
+          <p className="mt-2 text-sm text-[#525066] leading-relaxed">刚开始不用注册一堆工具，先用两个顺手的，把真实小事做起来。</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+          <article className="p-4 rounded-xl bg-[#F4F1EA] border border-[#1A1A24]/10 space-y-2">
+            <h3 className="font-semibold text-[#1A1A24]">今天注册这两个就够了</h3>
+            <p className="text-[#525066] leading-relaxed">国内先选 DeepSeek，再配豆包或 Kimi。一个负责思考和整理，一个负责联网、长文或语音，日常工作已经够用。</p>
+          </article>
+          <article className="p-4 rounded-xl bg-[#F4F1EA] border border-[#1A1A24]/10 space-y-2">
+            <h3 className="font-semibold text-[#1A1A24]">海外工具登不上怎么办</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-[#525066]">
+                <thead><tr className="border-b border-[#1A1A24]/10"><th className="py-1.5 pr-3 font-semibold">想做的事</th><th className="py-1.5 font-semibold">国内顺手替代</th></tr></thead>
+                <tbody>
+                  <tr className="border-b border-[#1A1A24]/10"><td className="py-1.5 pr-3">聊天、写作</td><td className="py-1.5">DeepSeek / 豆包</td></tr>
+                  <tr className="border-b border-[#1A1A24]/10"><td className="py-1.5 pr-3">长文阅读</td><td className="py-1.5">Kimi</td></tr>
+                  <tr><td className="py-1.5 pr-3">图片和视频</td><td className="py-1.5">即梦 / 可灵</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+          <article className="p-4 rounded-xl bg-[#F4F1EA] border border-[#1A1A24]/10 space-y-2">
+            <h3 className="font-semibold text-[#1A1A24]">满足这 3 条再考虑付费</h3>
+            <ol className="space-y-2 text-[#525066] leading-relaxed list-decimal list-inside">
+              <li>免费版已经连续一周不够用。</li>
+              <li>每月能省下至少 2 小时重复劳动。</li>
+              <li>你确认它能处理自己的真实任务。</li>
+            </ol>
+          </article>
+        </div>
+      </section>
+
       {/* Filter Tabs */}
       <section id="ch3-cards" className="scroll-mt-32 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -120,7 +155,7 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
                   if (f.id !== 'all') mark('filtered')
                 }}
                 aria-pressed={filter === f.id}
-                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 border-[#1E1B2E] cursor-pointer transition-all ${
+                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 border-[#1E1B2E] cursor-pointer transition-colors transition-transform ${
                   filter === f.id
                     ? 'bg-[#1E1B2E] text-white shadow-[2px_2px_0_#10B981]'
                     : 'bg-white text-[#1E1B2E] hover:bg-[#FFFBF5]'

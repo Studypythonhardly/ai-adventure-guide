@@ -21,7 +21,7 @@ export function HomeView({ completedChapters, onNavigate, xp, levelInfo }) {
           </h1>
 
           <p className="mt-4 text-sm sm:text-base text-[#45405C] leading-relaxed">
-            没有晦涩公式，用 6 个互动关卡 + 24 个实战案例：拆解大模型原理、围观黎曼猜想与 3D 鹈鹕、挑对 AI 工具，最后零代码亲手做出可下载的网页作品。
+            没有晦涩公式，用 6 个互动关卡 + {USE_CASES.length} 个实战案例：拆解大模型原理、围观黎曼猜想与 3D 鹈鹕、挑对 AI 工具，最后零代码亲手做出可下载的网页作品。
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">

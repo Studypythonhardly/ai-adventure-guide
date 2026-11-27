@@ -259,7 +259,7 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
               triggerBuildEffect()
             }}
             aria-pressed={projectId === p.id}
-            className={`p-4 rounded-2xl border-2 text-left cursor-pointer transition-all ${
+            className={`p-4 rounded-2xl border-2 text-left cursor-pointer transition-colors transition-transform ${
               projectId === p.id
                 ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[4px_4px_0_#EC4899]'
                 : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/25 hover:border-[#1E1B2E]'
@@ -324,7 +324,7 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
                       type="button"
                       key={bp.id}
                       onClick={() => handleApplyBoardPreset(bp.id)}
-                      className={`py-2 px-2 rounded-xl border-2 text-xs font-black cursor-pointer transition-all ${
+                      className={`py-2 px-2 rounded-xl border-2 text-xs font-black cursor-pointer transition-colors transition-transform ${
                         boardPresetId === bp.id
                           ? 'bg-[#5B4BFF] text-white border-[#1E1B2E]'
                           : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'
