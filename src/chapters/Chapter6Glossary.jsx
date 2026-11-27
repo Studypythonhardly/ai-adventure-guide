@@ -66,10 +66,7 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
         >
           🎓
         </span>
-        <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#0284C7]">第 06 关</div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 黑话翻译局 & 毕业典礼</h1>
-        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">06 · AI 黑话翻译局 & 毕业典礼</h1>
       </div>
 
       {/* 3-Tab Switcher (No more endless scrolling past 19 glossary cards!) */}

@@ -9,14 +9,17 @@ import { getChapter } from '../lib/progress'
 export function Eli5Box({ badge = '一分钟秒懂', title, what, analogy, soWhat, accent = '#5B4BFF' }) {
   return (
     <div className="card-playful p-5 sm:p-6 relative overflow-hidden">
-      <div
-        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold text-white mb-3 badge-pill"
-        style={{ backgroundColor: accent }}
-      >
-        <span aria-hidden="true">💡</span>
-        <span>{badge}</span>
-      </div>
-      {title && <h2 className="text-xl font-black text-[#1E1B2E] mb-3">{title}</h2>}
+      {title ? (
+        <h2 className="text-lg sm:text-xl font-black text-[#1E1B2E] mb-3 flex items-center gap-2">
+          <span className="w-2 h-5 rounded-full shrink-0" style={{ backgroundColor: accent }} aria-hidden="true" />
+          <span>{title}</span>
+        </h2>
+      ) : (
+        <h2 className="text-base sm:text-lg font-black text-[#1E1B2E] mb-3 flex items-center gap-2">
+          <span className="w-2 h-4 rounded-full shrink-0" style={{ backgroundColor: accent }} aria-hidden="true" />
+          <span>{badge}</span>
+        </h2>
+      )}
 
       <div className="space-y-3 text-sm sm:text-base leading-relaxed">
         <div className="p-3.5 rounded-xl bg-[#FFFBF5] border-2 border-[#1E1B2E]/15">

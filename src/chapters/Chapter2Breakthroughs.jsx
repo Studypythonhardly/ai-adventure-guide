@@ -49,10 +49,7 @@ export function Chapter2Breakthroughs({ isCompleted, onComplete, onNext }) {
         >
           🏆
         </span>
-        <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#B45309]">第 02 关</div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 已经牛到什么地步了？</h1>
-        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">02 · AI 已经牛到什么地步了？</h1>
       </div>
 
       <SectionJumpBar

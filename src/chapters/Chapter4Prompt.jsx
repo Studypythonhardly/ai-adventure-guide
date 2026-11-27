@@ -120,10 +120,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
         >
           ✨
         </span>
-        <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#6D28D9]">第 04 关</div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 咒语学院（Prompt & Skill）</h1>
-        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">04 · AI 咒语学院（Prompt & Skill）</h1>
       </div>
 
       <SectionJumpBar

@@ -66,10 +66,7 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
         >
           🧠
         </span>
-        <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#C83726]">第 01 关</div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 到底是个啥？</h1>
-        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">01 · AI 到底是个啥？</h1>
       </div>
 
       <SectionJumpBar

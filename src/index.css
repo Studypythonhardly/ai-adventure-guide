@@ -6,6 +6,12 @@
     background-color: #FFFBF5;
     color: #1E1B2E;
   }
+
+  /* 高对比度选中样式：浅底与深底代码块上都清晰可读 */
+  ::selection {
+    background-color: #5B4BFF;
+    color: #FFFFFF;
+  }
 }
 
 /* Tactile playful card style (Duolingo / editorial-meets-game feel) */

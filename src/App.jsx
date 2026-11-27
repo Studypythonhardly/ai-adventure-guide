@@ -183,10 +183,7 @@ export default function App() {
             >
               🤖
             </span>
-            <span>
-              <span className="block font-black text-base sm:text-lg text-[#1E1B2E] leading-none">AI 奇妙漫游指南</span>
-              <span className="block text-[11px] font-bold text-[#595470] mt-0.5">零基础互动教程</span>
-            </span>
+            <span className="font-black text-base sm:text-lg text-[#1E1B2E] leading-none">AI 奇妙漫游指南</span>
           </button>
 
           {/* Progress & XP Pill (desktop) */}
@@ -250,9 +247,6 @@ export default function App() {
           <div className="md:hidden card-playful p-3">{progressBar}</div>
 
           <nav className="card-playful p-3 space-y-1.5" aria-label="关卡地图">
-            <div className="px-2.5 py-1 text-[11px] font-black uppercase tracking-wider text-[#595470]">
-              🗺️ 关卡地图
-            </div>
             {CHAPTERS.map((ch) => {
               const active = activeId === ch.id
               const done = completedChapters.includes(ch.id)
@@ -286,9 +280,6 @@ export default function App() {
 
             {/* Permanent Practical Toolbox: AI Use Case Library */}
             <div className="pt-2 mt-2 border-t-2 border-dashed border-[#1E1B2E]/15">
-              <div className="px-2.5 py-1 text-[11px] font-black uppercase tracking-wider text-[#B45309]">
-                🧰 随查工具箱
-              </div>
               <button
                 type="button"
                 onClick={() => handleNavigate('cases')}
@@ -302,13 +293,6 @@ export default function App() {
                 <span className="flex items-center gap-2.5 min-w-0">
                   <span className="text-lg shrink-0" aria-hidden="true">🧰</span>
                   <span className="text-xs font-black truncate">AI 实战案例库 ({USE_CASES.length})</span>
-                </span>
-                <span
-                  className={`text-[10px] font-black px-1.5 py-0.5 rounded-md shrink-0 ${
-                    activeId === 'cases' ? 'bg-white/25 text-white' : 'bg-white text-[#B45309]'
-                  }`}
-                >
-                  速查
                 </span>
               </button>
             </div>
@@ -344,11 +328,6 @@ export default function App() {
                   </li>
                 ))}
               </ul>
-            )}
-            {levelInfo.next && (
-              <p className="text-[11px] font-bold text-[#595470]">
-                再得 {levelInfo.next.minXp - xp} XP 升级为「{levelInfo.next.emoji} {levelInfo.next.title}」
-              </p>
             )}
           </div>
         </aside>

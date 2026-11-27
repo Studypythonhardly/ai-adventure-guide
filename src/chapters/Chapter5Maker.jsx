@@ -218,10 +218,7 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
         >
           🛠️
         </span>
-        <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#BE185D]">第 05 关 · 真正用 AI 做个东西</div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">动手造物工坊（Vibe Coding 体验）</h1>
-        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">05 · 动手造物工坊</h1>
       </div>
 
       <Eli5Box
@@ -263,14 +260,9 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left: Plain-Chinese AI Instruction Panel */}
         <div className="lg:col-span-5 card-playful p-5 space-y-5">
-          <div className="flex items-center justify-between">
-            <h2 className="font-black text-lg text-[#1E1B2E] flex items-center gap-1.5">
-              <Wand2 className="w-5 h-5 text-[#EC4899]" aria-hidden="true" /> 给 AI 下大白话指令
-            </h2>
-            <span className="text-[11px] font-black px-2 py-0.5 rounded-full bg-[#FDECF4] text-[#BE185D]">
-              无需写代码
-            </span>
-          </div>
+          <h2 className="font-black text-lg text-[#1E1B2E] flex items-center gap-1.5">
+            <Wand2 className="w-5 h-5 text-[#EC4899]" aria-hidden="true" /> 定制指令
+          </h2>
 
           {/* Theme Color Picker */}
           <div className="space-y-2">
@@ -567,9 +559,8 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
               <span className="w-3 h-3 rounded-full bg-[#FF6B57]" aria-hidden="true" />
               <span className="w-3 h-3 rounded-full bg-[#F59E0B]" aria-hidden="true" />
               <span className="w-3 h-3 rounded-full bg-[#10B981]" aria-hidden="true" />
-              <span className="ml-2 text-white/75">实时预览 · 你的专属网页（可直接点着玩！）</span>
+              <span className="ml-2 text-white/80">实时预览</span>
             </div>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-white/15">LIVE 🟢</span>
           </div>
 
           <div
