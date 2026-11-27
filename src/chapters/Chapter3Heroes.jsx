@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Eli5Box, CheckpointQuiz, ChapterFooterNav } from '../components/Eli5Card'
-import { AI_HEROES, MATCHMAKER_TASKS, CHECKPOINTS, CONTENT_UPDATED_AT } from '../data/courseData'
+import { Eli5Box, CheckpointQuiz, ChapterFooterNav, SectionJumpBar } from '../components/Eli5Card'
+import { AI_HEROES, MATCHMAKER_TASKS, CHECKPOINTS } from '../data/courseData'
 import { useMissionFlags } from '../hooks/useMissionFlags'
 import { Compass, Sparkles, Lightbulb } from 'lucide-react'
 
@@ -38,10 +38,20 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
           🃏
         </span>
         <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#047857]">第 03 关 · 按任务挑工具</div>
+          <div className="text-xs font-black uppercase tracking-wider text-[#047857]">第 03 关</div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">主流 AI 英雄图鉴</h1>
         </div>
       </div>
+
+      <SectionJumpBar
+        items={[
+          { id: 'ch3-matchmaker', label: '🎯 帮我选 AI' },
+          { id: 'ch3-cards', label: '🃏 工具卡牌' },
+          { id: 'chapter-footer', label: '✅ 通关任务' },
+        ]}
+        missions={missions}
+        isCompleted={isCompleted}
+      />
 
       <Eli5Box
         badge="小白选 AI 不迷路"
@@ -52,13 +62,10 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
       />
 
       {/* Interactive Matchmaker Widget */}
-      <section className="card-playful p-5 sm:p-7 bg-gradient-to-br from-[#E8FBF3] via-[#FFFFFF] to-[#EEF0FF] space-y-4">
+      <section id="ch3-matchmaker" className="scroll-mt-32 card-playful p-5 sm:p-7 bg-gradient-to-br from-[#E8FBF3] via-[#FFFFFF] to-[#EEF0FF] space-y-4">
         <div className="flex items-center gap-2">
           <Compass className="w-6 h-6 text-[#5B4BFF]" aria-hidden="true" />
-          <div>
-            <h2 className="text-xl font-black text-[#1E1B2E]">🎯 “帮我选 AI！” 场景匹配器</h2>
-            <p className="text-xs sm:text-sm text-[#595470]">点一个你想解决的生活问题，看看该派哪类 AI 出马：</p>
-          </div>
+          <h2 className="text-xl font-black text-[#1E1B2E]">🎯 “帮我选 AI！” 场景匹配器</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5" role="group" aria-label="生活问题列表">
@@ -101,16 +108,11 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
       </section>
 
       {/* Filter Tabs */}
-      <section className="space-y-5">
+      <section id="ch3-cards" className="scroll-mt-32 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="text-2xl font-black text-[#1E1B2E] flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-[#10B981]" aria-hidden="true" /> 代表性 AI 工具卡牌
-            </h2>
-            <p className="text-xs text-[#595470] mt-0.5">
-              整理于 {CONTENT_UPDATED_AT} · 卡牌数值为教学定位印象，并非跑分排行
-            </p>
-          </div>
+          <h2 className="text-2xl font-black text-[#1E1B2E] flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-[#10B981]" aria-hidden="true" /> 代表性 AI 工具卡牌
+          </h2>
           <div className="flex flex-wrap gap-2" role="group" aria-label="英雄分类筛选">
             {FILTERS.map((f) => (
               <button

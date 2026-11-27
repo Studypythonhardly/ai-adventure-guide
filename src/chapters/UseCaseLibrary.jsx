@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { USE_CASE_CATEGORIES, USE_CASES } from '../data/useCasesData'
 import { copyText } from '../lib/browser'
-import { Search, Copy, Check, Star, ChevronDown, ChevronUp, Sparkles } from 'lucide-react'
+import { Search, Copy, Check, Star, ChevronDown, ChevronUp } from 'lucide-react'
 
 const FAV_STORAGE_KEY = 'ai_adventure_fav_cases_v1'
 
@@ -60,22 +60,23 @@ export function UseCaseLibrary() {
 
   return (
     <div className="space-y-7 animate-pop">
-      {/* Header Banner */}
-      <section className="card-playful p-6 sm:p-8 bg-gradient-to-br from-[#FEF6E4] via-[#FFFFFF] to-[#E8FBF3] space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1E1B2E] text-white text-xs font-black">
-          <Sparkles className="w-3.5 h-3.5 text-[#FDE047]" aria-hidden="true" /> 随查随用 · 永久收藏夹（共 {USE_CASES.length} 个真实生活场景）
+      {/* Compact Header */}
+      <div className="flex items-center gap-3">
+        <span
+          className="w-12 h-12 rounded-2xl bg-[#FEF6E4] border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] flex items-center justify-center text-2xl"
+          aria-hidden="true"
+        >
+          🧰
+        </span>
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">
+            AI 实战案例库 ({USE_CASES.length})
+          </h1>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">
-          🧰 AI 实战案例库：遇到事来这搜一下，看看 AI 怎么帮上忙
-        </h1>
-        <p className="text-sm sm:text-base text-[#45405C] leading-relaxed max-w-3xl">
-          很多人学完 AI 还是想不起来用，不是因为不会，而是<strong>没想到“原来这件事也能让 AI 先打个草稿”</strong>！
-          这里收录了日常与工作最高频的 {USE_CASES.length} 个场景，每个都附带<strong>推荐工具 + 一键复制的提示词模板</strong>（记得把涉及隐私的真名和数字先替换脱敏哦）。
-        </p>
-      </section>
+      </div>
 
-      {/* Search + Filters */}
-      <section className="card-playful p-4 sm:p-5 space-y-4">
+      {/* Sticky Search + Filters */}
+      <section className="sticky top-[68px] z-20 card-playful p-3.5 sm:p-4 bg-[#FFFBF5]/95 backdrop-blur space-y-3">
         <div className="flex flex-col md:flex-row gap-3">
           <div className="relative flex-1">
             <label htmlFor="case-search" className="sr-only">

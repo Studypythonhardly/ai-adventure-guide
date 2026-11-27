@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Eli5Box, ChapterFooterNav } from '../components/Eli5Card'
+import { Eli5Box, ChapterFooterNav, SectionJumpBar } from '../components/Eli5Card'
 import { PROMPT_SCENARIOS, PROMPT_DIAGNOSIS } from '../data/courseData'
 import { copyText } from '../lib/browser'
 import { useMissionFlags } from '../hooks/useMissionFlags'
@@ -121,10 +121,20 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
           ✨
         </span>
         <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#6D28D9]">第 04 关 · 掌握核心沟通术</div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 咒语学院（Prompt 入门）</h1>
+          <div className="text-xs font-black uppercase tracking-wider text-[#6D28D9]">第 04 关</div>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 咒语学院（Prompt & Skill）</h1>
         </div>
       </div>
+
+      <SectionJumpBar
+        items={[
+          { id: 'ch4-alchemy', label: '✨ 咒语炼金工坊' },
+          { id: 'ch4-clinic', label: '🩺 咒语急诊室' },
+          { id: 'ch4-skill', label: '🧩 AI 技能包' },
+        ]}
+        missions={missions}
+        isCompleted={isCompleted}
+      />
 
       <Eli5Box
         badge="ELI5 打破误解"
@@ -136,14 +146,9 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
       />
 
       {/* Interactive Prompt Alchemy Lab */}
-      <section className="card-playful p-5 sm:p-7 space-y-6">
+      <section id="ch4-alchemy" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#F3EEFF] text-[#6D28D9] text-xs font-black border border-[#8B5CF6]/30 mb-1">
-              🎮 互动实验 4A：咒语炼金工坊
-            </span>
-            <h2 className="text-xl font-black text-[#1E1B2E]">点亮 4 块魔法积木，对比 AI 回答的变化</h2>
-          </div>
+          <h2 className="text-xl font-black text-[#1E1B2E]">✨ 咒语炼金工坊 · 点亮 4 块积木对比效果</h2>
           <div className="flex flex-wrap gap-2" role="group" aria-label="咒语场景">
             {PROMPT_SCENARIOS.map((sc, i) => (
               <button
@@ -280,14 +285,10 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
       </section>
 
       {/* Interactive Lab 4B: Prompt Diagnosis Clinic */}
-      <section className="card-playful p-5 sm:p-7 space-y-5">
-        <div>
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FFF0ED] text-[#C83726] text-xs font-black border border-[#FF6B57]/35 mb-1">
-            <Stethoscope className="w-3.5 h-3.5" aria-hidden="true" /> 🎮 互动实验 4B：咒语急诊室（通关必做）
-          </span>
-          <h2 className="text-xl font-black text-[#1E1B2E]">会看病才会开方：下面 3 句提问分别最缺哪一块积木？</h2>
-          <p className="text-sm text-[#595470]">找出最关键的缺失项，把 3 道病例全部诊断正确：</p>
-        </div>
+      <section id="ch4-clinic" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-5">
+        <h2 className="text-xl font-black text-[#1E1B2E] flex items-center gap-2">
+          <Stethoscope className="w-5 h-5 text-[#FF6B57]" aria-hidden="true" /> 咒语急诊室：这 3 句提问分别最缺哪一块？
+        </h2>
 
         <div className="space-y-4">
           {PROMPT_DIAGNOSIS.map((item, idx) => {
@@ -381,7 +382,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
       </section>
 
       {/* Interactive AI Skill Cartridge Playground */}
-      <section className="card-playful p-5 sm:p-7 bg-gradient-to-br from-[#EEF0FF] via-[#FFFFFF] to-[#E8FBF3] space-y-5">
+      <section id="ch4-skill" className="scroll-mt-32 card-playful p-5 sm:p-7 bg-gradient-to-br from-[#EEF0FF] via-[#FFFFFF] to-[#E8FBF3] space-y-5">
         <div>
           <span className="inline-block px-3 py-1 rounded-full bg-[#1E1B2E] text-white text-xs font-black mb-1.5">
             🧩 进阶必懂：AI Skill（技能包）

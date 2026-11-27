@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { CHAPTERS, CONTENT_UPDATED_AT } from './data/courseData'
+import { CHAPTERS } from './data/courseData'
 import { USE_CASES } from './data/useCasesData'
 import { HomeView } from './chapters/HomeView'
 import {
@@ -16,7 +16,7 @@ import {
 import { celebrate } from './lib/browser'
 import { useHashRoute } from './hooks/useHashRoute'
 import { clearAllMissions } from './hooks/useMissionFlags'
-import { CheckCircle2, Menu, X, RotateCcw, Award } from 'lucide-react'
+import { CheckCircle2, Menu, X, RotateCcw, Award, ArrowUp } from 'lucide-react'
 
 // 各关卡按需加载：首页不再背着 Three.js 等大依赖
 const Chapter1Brain = lazy(() => import('./chapters/Chapter1Brain'))
@@ -52,9 +52,16 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [progressState, setProgressState] = useState(loadState)
   const [toast, setToast] = useState(null)
+  const [showTopBtn, setShowTopBtn] = useState(false)
   const toastTimer = useRef(null)
   const mainRef = useRef(null)
   const isFirstRender = useRef(true)
+
+  useEffect(() => {
+    const onScroll = () => setShowTopBtn(window.scrollY > 420)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const { completedChapters, completedAt, nickname } = progressState
 
@@ -379,12 +386,21 @@ export default function App() {
         </main>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t-2 border-[#1E1B2E]/10 py-5 px-4 text-center text-xs font-bold text-[#595470] space-y-1 no-print">
-        <p>🤖 《AI 奇妙漫游指南》 · 互动学习体验 · 全程 ELI5 大白话打造</p>
-        <p>
-          内容更新于 {CONTENT_UPDATED_AT}。AI 领域变化很快，产品名称、能力与事件进展可能已经过时，重要信息请以官方来源为准。
-        </p>
+      {/* Back to top floating button */}
+      {showTopBtn && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="回到顶部"
+          className="no-print fixed bottom-6 right-5 z-40 w-10 h-10 rounded-full bg-white text-[#1E1B2E] border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] flex items-center justify-center cursor-pointer hover:bg-[#EEF0FF] transition-colors"
+        >
+          <ArrowUp className="w-4 h-4" aria-hidden="true" />
+        </button>
+      )}
+
+      {/* Minimal Footer */}
+      <footer className="border-t-2 border-[#1E1B2E]/10 py-4 px-4 text-center text-xs font-bold text-[#6B6685] no-print">
+        🤖 AI 奇妙漫游指南
       </footer>
     </div>
   )

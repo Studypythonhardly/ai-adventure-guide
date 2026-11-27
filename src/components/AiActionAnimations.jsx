@@ -63,15 +63,9 @@ export function AiActionAnimations() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1E1B2E] text-white text-xs font-black mb-1.5">
-            <Layers className="w-3.5 h-3.5 text-[#38BDF8]" /> 真实工作流动态演示
-          </span>
-          <h2 className="text-xl sm:text-2xl font-black text-[#1E1B2E]">
-            AI 在真实工作与专业场景中如何创造价值？
+          <h2 className="text-xl sm:text-2xl font-black text-[#1E1B2E] flex items-center gap-2">
+            <Layers className="w-5 h-5 text-[#5B4BFF]" aria-hidden="true" /> AI 真实工作流动态演示
           </h2>
-          <p className="text-xs sm:text-sm text-[#595470] mt-0.5">
-            点击切换 4 大高频正式场景，直观查看 AI 从“输入信息”到“产出结果”的完整工作流。
-          </p>
         </div>
 
         <button

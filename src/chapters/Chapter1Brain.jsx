@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Eli5Box, CheckpointQuiz, ChapterFooterNav } from '../components/Eli5Card'
+import { Eli5Box, CheckpointQuiz, ChapterFooterNav, SectionJumpBar } from '../components/Eli5Card'
 import { NEXT_TOKEN_SCENARIOS, CHECKPOINTS } from '../data/courseData'
 import { softmaxWithTemperature, sampleIndex, simulateTokenize } from '../lib/llmDemo'
 import { useMissionFlags } from '../hooks/useMissionFlags'
@@ -67,10 +67,20 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
           🧠
         </span>
         <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#C83726]">第 01 关 · 揭开神秘面纱</div>
+          <div className="text-xs font-black uppercase tracking-wider text-[#C83726]">第 01 关</div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 到底是个啥？</h1>
         </div>
       </div>
+
+      <SectionJumpBar
+        items={[
+          { id: 'ch1-lab-token', label: '🎲 词语接龙与温度' },
+          { id: 'ch1-lab-lego', label: '✂️ 乐高切词机' },
+          { id: 'chapter-footer', label: '✅ 通关任务' },
+        ]}
+        missions={missions}
+        isCompleted={isCompleted}
+      />
 
       {/* ELI5 Core */}
       <Eli5Box
@@ -83,17 +93,9 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
       />
 
       {/* Interactive Lab 1A: Next-Token Prediction */}
-      <section className="card-playful p-5 sm:p-7 space-y-5">
+      <section id="ch1-lab-token" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#EEF0FF] text-[#5B4BFF] text-xs font-black border border-[#5B4BFF]/30 mb-1">
-              🎮 互动实验 1A
-            </span>
-            <h2 className="text-xl font-black text-[#1E1B2E]">词语接龙透视镜 + 温度滑块（Temperature）</h2>
-            <p className="text-sm text-[#595470]">
-              拖动下面的“温度滑块”，看看候选词被抽中的概率怎么变，再点“掷骰子”亲自抽一次！
-            </p>
-          </div>
+          <h2 className="text-xl font-black text-[#1E1B2E]">🎲 词语接龙透视镜 · 温度滑块（Temperature）</h2>
           <div className="flex flex-wrap gap-2" role="group" aria-label="示例句子">
             {NEXT_TOKEN_SCENARIOS.map((sc, i) => (
               <button
@@ -223,18 +225,10 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
       </section>
 
       {/* Interactive Lab 1B: Token Lego Machine */}
-      <section className="card-playful p-5 sm:p-7 space-y-5">
-        <div>
-          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#E8FBF3] text-[#047857] text-xs font-black border border-[#10B981]/30 mb-1">
-            🎮 互动实验 1B
-          </span>
-          <h2 className="text-xl font-black text-[#1E1B2E] flex items-center gap-2">
-            <Scissors className="w-5 h-5 text-[#10B981]" aria-hidden="true" /> 乐高切词机（建立 Token 直觉）
-          </h2>
-          <p className="text-sm text-[#595470] mt-1">
-            AI 看文字不是按“字数”算，而是先切成一小块一小块的<strong>词元（Token）</strong>。随便输入或点选一句话试试：
-          </p>
-        </div>
+      <section id="ch1-lab-lego" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-5">
+        <h2 className="text-xl font-black text-[#1E1B2E] flex items-center gap-2">
+          <Scissors className="w-5 h-5 text-[#10B981]" aria-hidden="true" /> 乐高切词机 · Token 词元实验
+        </h2>
 
         <div className="space-y-3">
           <label htmlFor="token-input" className="sr-only">

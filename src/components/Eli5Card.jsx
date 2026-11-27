@@ -107,6 +107,48 @@ export function CheckpointQuiz({ quiz, onPass, passed, title = '🧠 通关小�
 }
 
 /**
+ * 吸顶页内快速定位条：一眼看清本关包含哪些板块，点击即刻平滑滚动到对应区域。
+ */
+export function SectionJumpBar({ items = [], missions = [], isCompleted = false }) {
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const doneCount = isCompleted ? missions.length : missions.filter((m) => m.done).length
+
+  return (
+    <div className="sticky top-[68px] z-20 -mx-1 px-3 py-2 rounded-2xl bg-[#FFFBF5]/95 backdrop-blur border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] flex flex-wrap items-center justify-between gap-2 no-print">
+      <div className="flex flex-wrap items-center gap-1.5">
+        {items.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => scrollToSection(item.id)}
+            className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#EEF0FF] border border-[#1E1B2E]/20 hover:border-[#1E1B2E] text-xs font-extrabold text-[#1E1B2E] cursor-pointer transition-colors"
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+      {missions.length > 0 && (
+        <button
+          type="button"
+          onClick={() => scrollToSection('chapter-footer')}
+          className={`px-2.5 py-1 rounded-full text-[11px] font-black border cursor-pointer shrink-0 ${
+            doneCount === missions.length
+              ? 'bg-[#E8FBF3] text-[#047857] border-[#10B981]'
+              : 'bg-[#FEF6E4] text-[#92400E] border-[#F59E0B]'
+          }`}
+        >
+          {doneCount === missions.length ? '✅ 任务完成' : `任务 ${doneCount}/${missions.length}`}
+        </button>
+      )}
+    </div>
+  )
+}
+
+/**
  * 关卡底部：任务清单 + 打卡按钮 + 下一关。
  * missions: [{ id, label, done }]，全部完成才能打卡通关。
  */
@@ -118,15 +160,16 @@ export function ChapterFooterNav({ chapterId, isCompleted, onComplete, nextLabel
 
   return (
     <section
-      className="mt-10 card-playful p-5 sm:p-6 bg-gradient-to-r from-[#EEF0FF] via-[#FFFBF5] to-[#FEF6E4] space-y-4"
+      id="chapter-footer"
+      className="mt-10 scroll-mt-32 card-playful p-5 sm:p-6 bg-gradient-to-r from-[#EEF0FF] via-[#FFFBF5] to-[#FEF6E4] space-y-4"
       aria-label="本关任务与打卡"
     >
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div className="space-y-2">
           <h2 className="text-sm font-black text-[#5B4BFF]">
             {isCompleted
-              ? '✅ 本关已通关！随时可以回来重温'
-              : `🎯 本关任务（${doneCount}/${missions.length}）· 全部完成可得 +${xpReward} XP 与专属徽章`}
+              ? '✅ 本关已通关'
+              : `🎯 本关任务（${doneCount}/${missions.length}）· +${xpReward} XP`}
           </h2>
           {missions.length > 0 && (
             <ul className="space-y-1.5">
@@ -153,7 +196,6 @@ export function ChapterFooterNav({ chapterId, isCompleted, onComplete, nextLabel
               onClick={() => onComplete(chapterId)}
               disabled={!canComplete}
               className="btn-playful px-5 py-2.5 rounded-xl bg-[#10B981] text-white font-extrabold text-sm cursor-pointer inline-flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-              title={canComplete ? '' : '先完成上面的任务哦'}
             >
               {canComplete ? '🎉' : <Lock className="w-4 h-4" aria-hidden="true" />}
               打卡通关 (+{xpReward} XP)
@@ -170,11 +212,6 @@ export function ChapterFooterNav({ chapterId, isCompleted, onComplete, nextLabel
           )}
         </div>
       </div>
-      {!isCompleted && !allDone && (
-        <p className="text-xs text-[#595470]">
-          💡 可以先逛下一关，但只有完成全部任务才会点亮徽章。任务进度会自动保存在本机浏览器里。
-        </p>
-      )}
     </section>
   )
 }

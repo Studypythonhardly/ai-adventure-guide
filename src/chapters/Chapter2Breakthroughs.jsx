@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Eli5Box, CheckpointQuiz, ChapterFooterNav } from '../components/Eli5Card'
+import { Eli5Box, CheckpointQuiz, ChapterFooterNav, SectionJumpBar } from '../components/Eli5Card'
 import { PelicanBikeStage } from '../components/PelicanBikeStage'
 import {
   RIEMANN_TIMELINE,
@@ -50,13 +50,24 @@ export function Chapter2Breakthroughs({ isCompleted, onComplete, onNext }) {
           🏆
         </span>
         <div>
-          <div className="text-xs font-black uppercase tracking-wider text-[#B45309]">第 02 关 · 既看高光也看边界</div>
+          <div className="text-xs font-black uppercase tracking-wider text-[#B45309]">第 02 关</div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">AI 已经牛到什么地步了？</h1>
         </div>
       </div>
 
+      <SectionJumpBar
+        items={[
+          { id: 'ch2-riemann', label: '📐 黎曼猜想' },
+          { id: 'ch2-pelican', label: '🚲 3D 鹈鹕' },
+          { id: 'ch2-limits', label: '⚖️ 能力与边界' },
+          { id: 'ch2-quiz', label: '🎮 真假挑战' },
+        ]}
+        missions={missions}
+        isCompleted={isCompleted}
+      />
+
       {/* Featured Case: Riemann Hypothesis Nov 2026 */}
-      <section className="card-playful p-5 sm:p-7 bg-gradient-to-br from-[#FEF6E4] via-[#FFFFFF] to-[#EEF0FF] space-y-5">
+      <section id="ch2-riemann" className="scroll-mt-32 card-playful p-5 sm:p-7 bg-gradient-to-br from-[#FEF6E4] via-[#FFFFFF] to-[#EEF0FF] space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#B45309] text-white text-xs font-black badge-pill">
             <Award className="w-4 h-4" aria-hidden="true" /> 2026 年 11 月数学 × AI 里程碑案例
@@ -185,10 +196,12 @@ export function Chapter2Breakthroughs({ isCompleted, onComplete, onNext }) {
       </section>
 
       {/* Iconic Pelican Riding a Bicycle Animated Benchmark */}
-      <PelicanBikeStage />
+      <div id="ch2-pelican" className="scroll-mt-32">
+        <PelicanBikeStage />
+      </div>
 
       {/* 3 More Mind-Blowing AI Superpowers */}
-      <section className="space-y-4">
+      <section id="ch2-limits" className="scroll-mt-32 space-y-4">
         <h2 className="text-2xl font-black text-[#1E1B2E] flex items-center gap-2">
           <Sparkles className="w-6 h-6 text-[#F59E0B]" aria-hidden="true" /> 除了数学，现代 AI 还擅长这 3 类事
         </h2>
@@ -250,14 +263,8 @@ export function Chapter2Breakthroughs({ isCompleted, onComplete, onNext }) {
       </section>
 
       {/* Interactive Mini-Game: AI Myth-Buster */}
-      <section className="card-playful p-5 sm:p-7 space-y-5">
-        <div>
-          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#FDECF4] text-[#BE185D] text-xs font-black border border-[#EC4899]/30 mb-1">
-            🎮 真假大挑战（通关必做）
-          </span>
-          <h2 className="text-xl font-black text-[#1E1B2E]">测测你的 AI 认知：把下面 4 道题全部选对！</h2>
-          <p className="text-sm text-[#595470]">选错了也没关系，看完解析改选正确答案就能点亮任务。</p>
-        </div>
+      <section id="ch2-quiz" className="scroll-mt-32 card-playful p-5 sm:p-7 space-y-5">
+        <h2 className="text-xl font-black text-[#1E1B2E]">🎮 真假大挑战（4 题全对解锁任务）</h2>
 
         <div className="space-y-4">
           {AI_OR_HUMAN_QUIZ.map((q, idx) => {
