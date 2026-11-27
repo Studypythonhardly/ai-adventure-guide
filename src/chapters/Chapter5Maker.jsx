@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { Eli5Box, ChapterFooterNav } from '../components/Eli5Card'
+import { Eli5Box, ChapterFooterNav, SectionJumpBar } from '../components/Eli5Card'
+import { PersonalBoardGuide } from '../components/PersonalBoardGuide'
 import { BOARD_PRESETS, VIBE_PROJECTS, VIBE_THEMES, generateStandaloneHTML } from '../data/vibeTemplates'
 import { celebrate, copyText } from '../lib/browser'
 import { useMissionFlags } from '../hooks/useMissionFlags'
@@ -221,6 +222,23 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
         <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">05 · 动手造物工坊</h1>
       </div>
 
+      <SectionJumpBar
+        items={[
+          { id: 'ch5-board-guide', label: '📊 4步聊出个人看板' },
+          { id: 'ch5-studio', label: '🛠️ 在线定制并下载' },
+          { id: 'chapter-footer', label: '✅ 通关任务' },
+        ]}
+        missions={missions}
+        isCompleted={isCompleted}
+      />
+
+      <PersonalBoardGuide
+        onJumpToStudio={() => {
+          setProjectId('board')
+          document.getElementById('ch5-studio')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }}
+      />
+
       <Eli5Box
         badge="热门新玩法：氛围编程"
         accent="#EC4899"
@@ -231,7 +249,7 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
       />
 
       {/* Project Selector */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" role="group" aria-label="选择要制作的小作品">
+      <div id="ch5-studio" className="scroll-mt-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" role="group" aria-label="选择要制作的小作品">
         {VIBE_PROJECTS.map((p) => (
           <button
             type="button"
@@ -847,27 +865,6 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
                 )}
               </div>
             )}
-          </div>
-        </div>
-      </section>
-
-      {/* Concise 3-Step Guide: How to build ANY Personal Dashboard with AI */}
-      <section className="card-playful p-5 sm:p-6 bg-[#FFFBF5] space-y-3">
-        <h2 className="text-base sm:text-lg font-black text-[#1E1B2E]">
-          📊 举一反三：用 AI 做个人看板（工作排期 / 产品分析 / 内容展示）的 3 步公式
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm">
-          <div className="p-3.5 rounded-xl bg-white border border-[#1E1B2E]/15 space-y-1">
-            <div className="font-black text-[#5B4BFF]">① 先定“顶栏 3 数字 + 3 列结构”</div>
-            <p className="text-[#45405C]">告诉 AI 看板最上面放哪 3 个核心指标（如完成率、本周产出、待办数），下面分哪几列。</p>
-          </div>
-          <div className="p-3.5 rounded-xl bg-white border border-[#1E1B2E]/15 space-y-1">
-            <div className="font-black text-[#10B981]">② 直接粘贴你的原始清单或数据</div>
-            <p className="text-[#45405C]">把凌乱的备忘录、产品分析要点或作品链接直接贴给 AI，让它帮你自动分类填进看板。</p>
-          </div>
-          <div className="p-3.5 rounded-xl bg-white border border-[#1E1B2E]/15 space-y-1">
-            <div className="font-black text-[#EC4899]">③ 加上“单文件 HTML + 本地保存”</div>
-            <p className="text-[#45405C]">让 AI 用 localStorage 存数据，下载成单个 .html 文件，每天双击就能当专属个人工作台！</p>
           </div>
         </div>
       </section>
