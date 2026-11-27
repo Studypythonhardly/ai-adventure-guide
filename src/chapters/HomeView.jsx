@@ -60,7 +60,7 @@ export function HomeView({ completedChapters, onNavigate, xp, levelInfo }) {
       </section>
 
       {/* Formal Interactive Workflow Demo */}
-      <AiActionAnimations />
+      <AiActionAnimations onNavigate={onNavigate} />
 
       {/* Adventure Map */}
       <section aria-labelledby="roadmap-heading">

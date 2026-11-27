@@ -9,7 +9,8 @@ const SCENES = [
     title: '68 页合作协议智能审阅：自动识别风险条款与缺失项',
     metric: '审阅耗时：3 小时 ➔ 45 秒',
     eli5: '就像请了一位自带“高亮荧光笔”的资深法务助理：几万字的长文档一秒通读，把违约责任、隐性续约和权责不对等的条款逐条摘出来，并直接附上修改建议。',
-    tools: '代表能力：Kimi / Claude / DeepSeek（超长上下文）',
+    tools: '代表能力：Kimi / Claude / DeepSeek（去案例库抄作业）',
+    targetId: 'cases',
     accent: '#6366F1',
   },
   {
@@ -19,7 +20,8 @@ const SCENES = [
     title: '万行报表一键解析：自动生成可视化趋势与归因简报',
     metric: '复盘准备：半天 ➔ 2 分钟',
     eli5: '不用再对着密密麻麻的表格发呆或死记公式——把脱敏后的周期数据传给 AI，它自动算出环比波动、揪出异常增长或下滑的真正原因，直接输出可上会汇报的结论。',
-    tools: '代表能力：DeepSeek / GPT / 通义千问（代码解释器）',
+    tools: '代表能力：DeepSeek / GPT / 通义千问（去案例库看模板）',
+    targetId: 'cases',
     accent: '#0EA5E9',
   },
   {
@@ -29,7 +31,8 @@ const SCENES = [
     title: '一句指令驱动全流程：检索资料、归类汇总、自动分发',
     metric: '人工反复复制粘贴 ➔ 全自动闭环',
     eli5: '2026 年的 AI 不再只是陪聊窗口，而是像一位能同时打开多个办公软件的项目助理：通过 MCP 标准接口，自动查资料、整理 500 条用户反馈、生成周报草稿并推送待办。',
-    tools: '代表能力：AI Agent + MCP 万能工具协议',
+    tools: '代表能力：AI Agent + MCP（去第 3 关看工具图鉴）',
+    targetId: 'ch3',
     accent: '#10B981',
   },
   {
@@ -39,12 +42,13 @@ const SCENES = [
     title: '用自然语言描述需求，5 分钟生成可运行的专属对账/查询工具',
     metric: '外包排期 2 周 ➔ 5 分钟即时可用',
     eli5: '遇到两张财务流水对不上、或者需要一个内部排班/查询小网页时，不必等排期开发——用大白话讲清规则，AI 直接写出单文件本地网页，数据不上传、打开即用。',
-    tools: '代表能力：Claude / Cursor / Trae / Antigravity',
+    tools: '代表能力：Claude / Cursor / Trae（去第 5 关亲手体验）',
+    targetId: 'ch5',
     accent: '#8B5CF6',
   },
 ]
 
-export function AiActionAnimations() {
+export function AiActionAnimations({ onNavigate }) {
   const [sceneIdx, setSceneIdx] = useState(0)
   const [autoPlay, setAutoPlay] = useState(false)
 
@@ -351,10 +355,20 @@ export function AiActionAnimations() {
             <strong className="text-[#1E1B2E]">💡 大白话原理：</strong>
             {scene.eli5}
           </div>
-          <div className="flex items-center justify-between gap-2 p-3 rounded-xl bg-[#EEF0FF]/70 border border-[#5B4BFF]/25 text-xs font-extrabold text-[#3A2EDB]">
-            <span>{scene.tools}</span>
-            <ArrowRight className="w-4 h-4 shrink-0" />
-          </div>
+          {onNavigate ? (
+            <button
+              type="button"
+              onClick={() => onNavigate(scene.targetId)}
+              className="w-full flex items-center justify-between gap-2 p-3 rounded-xl bg-[#EEF0FF]/80 hover:bg-[#5B4BFF] hover:text-white border-2 border-[#5B4BFF]/35 hover:border-[#1E1B2E] text-xs font-extrabold text-[#3A2EDB] cursor-pointer transition-all group"
+            >
+              <span>{scene.tools}</span>
+              <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+            </button>
+          ) : (
+            <div className="p-3 rounded-xl bg-[#EEF0FF]/70 border border-[#5B4BFF]/25 text-xs font-extrabold text-[#3A2EDB]">
+              {scene.tools}
+            </div>
+          )}
         </div>
       </div>
     </section>
