@@ -6,7 +6,7 @@ import { getChapter } from '../lib/progress'
  * ELI5 三段式讲解卡片：
  * 1. 一句话懂它 (What)  2. 生活小比喻 (Analogy)  3. 跟我有啥关系 (So What)
  */
-export function Eli5Box({ badge = 'ELI5 秒懂时刻', title, what, analogy, soWhat, accent = '#5B4BFF' }) {
+export function Eli5Box({ badge = '一分钟秒懂', title, what, analogy, soWhat, accent = '#5B4BFF' }) {
   return (
     <div className="card-playful p-5 sm:p-6 relative overflow-hidden">
       <div

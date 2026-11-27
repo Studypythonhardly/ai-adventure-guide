@@ -1,19 +1,27 @@
 import { useState, useEffect, useRef } from 'react'
 import { Eli5Box, ChapterFooterNav } from '../components/Eli5Card'
-import { VIBE_PROJECTS, VIBE_THEMES, generateStandaloneHTML } from '../data/vibeTemplates'
+import { BOARD_PRESETS, VIBE_PROJECTS, VIBE_THEMES, generateStandaloneHTML } from '../data/vibeTemplates'
 import { celebrate, copyText } from '../lib/browser'
 import { useMissionFlags } from '../hooks/useMissionFlags'
-import { Download, Copy, Check, Sparkles, Play, Pause, RotateCcw, Plus, Wand2, X } from 'lucide-react'
+import { Download, Copy, Check, Sparkles, Play, Pause, RotateCcw, Plus, Wand2, X, ArrowRight } from 'lucide-react'
 
 const DEFAULT_FOODS = ['红烧牛肉面', '麻辣香锅', '轻食沙拉', '猪脚饭', '回转寿司', '黄焖鸡米饭']
 
 export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
   const [flags, mark] = useMissionFlags('ch5')
-  const [projectId, setProjectId] = useState('wheel')
+  const [projectId, setProjectId] = useState('board')
   const [themeId, setThemeId] = useState('indigo')
   const [isBuilding, setIsBuilding] = useState(false)
   const [copiedPrompt, setCopiedPrompt] = useState(false)
   const [downloadedOnce, setDownloadedOnce] = useState(false)
+
+  // Personal Board state
+  const [boardPresetId, setBoardPresetId] = useState('schedule')
+  const [boardTitle, setBoardTitle] = useState(BOARD_PRESETS.schedule.title)
+  const [boardCols, setBoardCols] = useState(BOARD_PRESETS.schedule.columns)
+  const [boardCards, setBoardCards] = useState(BOARD_PRESETS.schedule.cards)
+  const [newCardText, setNewCardText] = useState('')
+  const [newCardCol, setNewCardCol] = useState(0)
 
   // Per-project editable configs
   const [wheelTitle, setWheelTitle] = useState('今天中午吃什么？')
@@ -118,8 +126,46 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
     mark('customized')
   }
 
+  const handleApplyBoardPreset = (presetKey) => {
+    const p = BOARD_PRESETS[presetKey]
+    if (!p) return
+    setBoardPresetId(presetKey)
+    setBoardTitle(p.title)
+    setBoardCols(p.columns)
+    setBoardCards(p.cards)
+    mark('customized')
+    triggerBuildEffect()
+  }
+
+  const handleAddBoardCard = () => {
+    const v = newCardText.trim()
+    if (!v) return
+    setBoardCards((prev) => [...prev, { id: `b_${Date.now()}`, text: v, tag: '新增', col: newCardCol }])
+    setNewCardText('')
+    mark('customized')
+  }
+
+  const handleMoveBoardCard = (id) => {
+    setBoardCards((prev) => prev.map((c) => (c.id === id ? { ...c, col: (c.col + 1) % 3 } : c)))
+    mark('played')
+  }
+
+  const handleDeleteBoardCard = (id) => {
+    setBoardCards((prev) => prev.filter((c) => c.id !== id))
+    mark('customized')
+  }
+
   const getCurrentConfig = () => ({
-    title: projectId === 'wheel' ? wheelTitle : projectId === 'pomodoro' ? pomoTitle : cardTitle,
+    title:
+      projectId === 'board'
+        ? boardTitle
+        : projectId === 'wheel'
+        ? wheelTitle
+        : projectId === 'pomodoro'
+        ? pomoTitle
+        : cardTitle,
+    columns: boardCols,
+    cards: boardCards,
     items: wheelItems,
     minutes: pomoMinutes,
     sender: cardSender,
@@ -188,7 +234,7 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
       />
 
       {/* Project Selector */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3" role="group" aria-label="选择要制作的小作品">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" role="group" aria-label="选择要制作的小作品">
         {VIBE_PROJECTS.map((p) => (
           <button
             type="button"
@@ -258,6 +304,78 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
           </div>
 
           {/* Project Specific Controls */}
+          {projectId === 'board' && (
+            <div className="space-y-3">
+              <div>
+                <span className="text-xs font-black text-[#595470] block mb-1.5">2️⃣ 一键套用看板场景模板：</span>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {Object.values(BOARD_PRESETS).map((bp) => (
+                    <button
+                      type="button"
+                      key={bp.id}
+                      onClick={() => handleApplyBoardPreset(bp.id)}
+                      className={`py-2 px-2 rounded-xl border-2 text-xs font-black cursor-pointer transition-all ${
+                        boardPresetId === bp.id
+                          ? 'bg-[#5B4BFF] text-white border-[#1E1B2E]'
+                          : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'
+                      }`}
+                    >
+                      {bp.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label htmlFor="board-title" className="text-xs font-black text-[#595470] block mb-1">
+                  3️⃣ 看板名称：
+                </label>
+                <input
+                  id="board-title"
+                  value={boardTitle}
+                  onChange={(e) => {
+                    setBoardTitle(e.target.value)
+                    mark('customized')
+                  }}
+                  className="w-full px-3 py-2 rounded-xl border-2 border-[#1E1B2E]/25 text-sm font-bold focus:outline-none focus:border-[#5B4BFF]"
+                />
+              </div>
+              <div>
+                <label htmlFor="board-card-input" className="text-xs font-black text-[#595470] block mb-1">
+                  4️⃣ 添加新卡片：
+                </label>
+                <div className="flex gap-1.5">
+                  <input
+                    id="board-card-input"
+                    value={newCardText}
+                    onChange={(e) => setNewCardText(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleAddBoardCard()}
+                    placeholder="如：整理本周产品数据"
+                    className="flex-1 min-w-0 px-3 py-2 rounded-xl border-2 border-[#1E1B2E]/25 text-sm focus:outline-none focus:border-[#5B4BFF]"
+                  />
+                  <select
+                    aria-label="选择所属列"
+                    value={newCardCol}
+                    onChange={(e) => setNewCardCol(Number(e.target.value))}
+                    className="px-2 py-2 rounded-xl border-2 border-[#1E1B2E]/25 text-xs font-bold bg-white"
+                  >
+                    {boardCols.map((c, idx) => (
+                      <option key={c} value={idx}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={handleAddBoardCard}
+                    className="btn-playful px-3 py-2 rounded-xl bg-[#10B981] text-white font-black text-xs shrink-0 cursor-pointer"
+                  >
+                    <Plus className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {projectId === 'wheel' && (
             <div className="space-y-3">
               <div>
@@ -465,6 +583,101 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
                   AI 施工队正在刷新你的页面...
                 </div>
               </div>
+            ) : projectId === 'board' ? (
+              <div className="w-full space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <h3 className="text-lg font-black">📊 {boardTitle}</h3>
+                  <span
+                    className="text-xs font-black px-2.5 py-1 rounded-full border"
+                    style={{ backgroundColor: theme.card, borderColor: theme.accent, color: theme.accent }}
+                  >
+                    完成度 {boardCards.length ? Math.round((boardCards.filter((c) => c.col === 2).length / boardCards.length) * 100) : 0}%
+                  </span>
+                </div>
+
+                {/* Live KPI Strip */}
+                <div className="grid grid-cols-3 gap-2.5">
+                  {[
+                    { lbl: '总条目', val: boardCards.length },
+                    { lbl: boardCols[1], val: boardCards.filter((c) => c.col === 1).length },
+                    { lbl: boardCols[2], val: boardCards.filter((c) => c.col === 2).length },
+                  ].map((s) => (
+                    <div
+                      key={s.lbl}
+                      className="p-2.5 rounded-xl border-2 text-center"
+                      style={{
+                        backgroundColor: theme.card,
+                        borderColor: isDark ? theme.accent : '#1E1B2E',
+                      }}
+                    >
+                      <div className="text-lg font-black" style={{ color: theme.accent }}>
+                        {s.val}
+                      </div>
+                      <div className="text-[11px] font-bold opacity-75">{s.lbl}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 3 Live Interactive Columns */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {boardCols.map((colName, ci) => {
+                    const list = boardCards.filter((c) => c.col === ci)
+                    return (
+                      <div
+                        key={colName}
+                        className="p-3 rounded-2xl border-2 space-y-2"
+                        style={{
+                          backgroundColor: theme.card,
+                          borderColor: isDark ? theme.accent : '#1E1B2E',
+                        }}
+                      >
+                        <div className="text-xs font-black flex items-center justify-between">
+                          <span>{colName}</span>
+                          <span className="opacity-65">{list.length}</span>
+                        </div>
+                        <div className="space-y-2">
+                          {list.map((card) => (
+                            <div
+                              key={card.id}
+                              className="p-2.5 rounded-xl border text-left space-y-1.5"
+                              style={{ backgroundColor: theme.bg, borderColor: `${theme.accent}66` }}
+                            >
+                              <div className="flex items-start justify-between gap-1 text-xs font-bold leading-snug">
+                                <span>{card.text}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteBoardCard(card.id)}
+                                  aria-label={`删除 ${card.text}`}
+                                  className="opacity-50 hover:opacity-100 cursor-pointer shrink-0"
+                                >
+                                  <X className="w-3.5 h-3.5" aria-hidden="true" />
+                                </button>
+                              </div>
+                              <div className="flex items-center justify-between gap-1">
+                                <span
+                                  className="text-[10px] font-black px-1.5 py-0.5 rounded-full"
+                                  style={{ backgroundColor: theme.card, color: theme.accent }}
+                                >
+                                  {card.tag}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleMoveBoardCard(card.id)}
+                                  className="text-[10px] font-black px-2 py-0.5 rounded-lg text-white inline-flex items-center gap-0.5 cursor-pointer"
+                                  style={{ backgroundColor: theme.accent }}
+                                >
+                                  <span>{ci < 2 ? boardCols[ci + 1] : '重排'}</span>
+                                  <ArrowRight className="w-2.5 h-2.5" aria-hidden="true" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             ) : projectId === 'wheel' ? (
               <div
                 className="w-full max-w-md p-6 rounded-3xl border-3 text-center space-y-4"
@@ -643,6 +856,27 @@ export function Chapter5Maker({ isCompleted, onComplete, onNext }) {
                 )}
               </div>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Concise 3-Step Guide: How to build ANY Personal Dashboard with AI */}
+      <section className="card-playful p-5 sm:p-6 bg-[#FFFBF5] space-y-3">
+        <h2 className="text-base sm:text-lg font-black text-[#1E1B2E]">
+          📊 举一反三：用 AI 做个人看板（工作排期 / 产品分析 / 内容展示）的 3 步公式
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm">
+          <div className="p-3.5 rounded-xl bg-white border border-[#1E1B2E]/15 space-y-1">
+            <div className="font-black text-[#5B4BFF]">① 先定“顶栏 3 数字 + 3 列结构”</div>
+            <p className="text-[#45405C]">告诉 AI 看板最上面放哪 3 个核心指标（如完成率、本周产出、待办数），下面分哪几列。</p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-white border border-[#1E1B2E]/15 space-y-1">
+            <div className="font-black text-[#10B981]">② 直接粘贴你的原始清单或数据</div>
+            <p className="text-[#45405C]">把凌乱的备忘录、产品分析要点或作品链接直接贴给 AI，让它帮你自动分类填进看板。</p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-white border border-[#1E1B2E]/15 space-y-1">
+            <div className="font-black text-[#EC4899]">③ 加上“单文件 HTML + 本地保存”</div>
+            <p className="text-[#45405C]">让 AI 用 localStorage 存数据，下载成单个 .html 文件，每天双击就能当专属个人工作台！</p>
           </div>
         </div>
       </section>

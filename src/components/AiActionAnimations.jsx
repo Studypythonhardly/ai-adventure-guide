@@ -348,7 +348,7 @@ export function AiActionAnimations() {
             {scene.title}
           </h3>
           <div className="p-4 rounded-2xl bg-[#FFFBF5] border-2 border-[#1E1B2E]/15 text-xs sm:text-sm text-[#37334D] leading-relaxed">
-            <strong className="text-[#1E1B2E]">💡 ELI5 大白话原理：</strong>
+            <strong className="text-[#1E1B2E]">💡 大白话原理：</strong>
             {scene.eli5}
           </div>
           <div className="flex items-center justify-between gap-2 p-3 rounded-xl bg-[#EEF0FF]/70 border border-[#5B4BFF]/25 text-xs font-extrabold text-[#3A2EDB]">

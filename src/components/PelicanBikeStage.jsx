@@ -494,7 +494,7 @@ export function PelicanBikeStage() {
       <div className="p-4 rounded-2xl bg-white border-2 border-[#1E1B2E]/15 space-y-2">
         <div className="text-sm sm:text-base font-black text-[#1E1B2E]">{era.caption}</div>
         <div className="text-xs sm:text-sm text-[#45405C] leading-relaxed">
-          <strong>🧸 ELI5 揭秘：</strong> {era.eli5Why}
+          <strong>🧸 原理解密：</strong> {era.eli5Why}
         </div>
         {showCode && (
           <pre className="mt-2 p-3 rounded-xl bg-[#1E1B2E] text-[#A5B4FC] text-xs font-mono overflow-x-auto animate-pop">

@@ -17,7 +17,7 @@ const BLOCK_LABEL_MAP = Object.fromEntries(BLOCK_META.map((b) => [b.key, b.label
 const SKILL_CARTRIDGES = [
   {
     id: 'eli5',
-    name: '🧒 ELI5 讲人话技能包',
+    name: '🧒 大白话科普技能包',
     tag: '本教程正在使用！',
     color: '#5B4BFF',
     inside: '内置规范：① 先判断听众是谁 → ② 一句话说清本质 → ③ 举生活比喻 → ④ 严禁堆砌晦涩黑话',
@@ -137,7 +137,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
       />
 
       <Eli5Box
-        badge="ELI5 打破误解"
+        badge="打破误解"
         accent="#8B5CF6"
         title="为什么别人用的 AI 像得力助手，你的 AI 像在敷衍？"
         what="Prompt（提示词）根本不是编程代码，它就是你跟 AI 说的话。差别主要在于：你有没有把背景和目标交代清楚。"
@@ -391,7 +391,7 @@ export function Chapter4Prompt({ isCompleted, onComplete, onNext }) {
             每次都要重写一大段要求太累？给 AI 插上「Skill 技能卡带」！
           </h2>
           <p className="text-xs sm:text-sm text-[#45405C] mt-1 leading-relaxed">
-            <strong>🧸 ELI5 秒懂：</strong>如果说 Prompt 是你每次临时口头交代要求，那 <strong>Skill（技能包）</strong> 就像游戏机里的<strong>专业卡带</strong>——把你最满意的工作步骤（SOP）、模板和脚本打包存好，以后只需说一句大白话，AI 就会按固定标准干活！
+            <strong>🧸 一句话秒懂：</strong>如果说 Prompt 是你每次临时口头交代要求，那 <strong>Skill（技能包）</strong> 就像游戏机里的<strong>专业卡带</strong>——把你最满意的工作步骤（SOP）、模板和脚本打包存好，以后只需说一句大白话，AI 就会按固定标准干活！
           </p>
         </div>
 

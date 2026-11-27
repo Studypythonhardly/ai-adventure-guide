@@ -185,7 +185,7 @@ export default function App() {
             </span>
             <span>
               <span className="block font-black text-base sm:text-lg text-[#1E1B2E] leading-none">AI 奇妙漫游指南</span>
-              <span className="block text-[11px] font-bold text-[#595470] mt-0.5">零基础 ELI5 互动教程</span>
+              <span className="block text-[11px] font-bold text-[#595470] mt-0.5">零基础互动教程</span>
             </span>
           </button>
 

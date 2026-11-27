@@ -1,6 +1,53 @@
 // 第 5 关：动手造物工坊 —— 独立可下载 HTML 生成器
 
+export const BOARD_PRESETS = {
+  schedule: {
+    id: 'schedule',
+    label: '📅 工作排期',
+    title: '本周个人工作排期看板',
+    columns: ['待办事项', '进行中', '已完成'],
+    cards: [
+      { id: 'c1', text: '整理 Q4 核心指标复盘', tag: '高优', col: 0 },
+      { id: 'c2', text: '跟进合作方合同条款修订', tag: '沟通', col: 1 },
+      { id: 'c3', text: '输出新品上线宣发方案', tag: '策划', col: 1 },
+      { id: 'c4', text: '完成周一团队周会纪要', tag: '例行', col: 2 },
+    ],
+  },
+  analysis: {
+    id: 'analysis',
+    label: '📈 产品分析',
+    title: '产品体验与竞品分析看板',
+    columns: ['待验证假设', '分析中', '已沉淀结论'],
+    cards: [
+      { id: 'a1', text: '新手引导第 2 步流失率偏高', tag: '漏斗', col: 0 },
+      { id: 'a2', text: '拆解竞品 A/B 定价与权益差异', tag: '竞品', col: 1 },
+      { id: 'a3', text: '汇总 500 条用户评价高频吐槽', tag: '用研', col: 2 },
+      { id: 'a4', text: '老客复购占比提升 +18.4%', tag: '亮点', col: 2 },
+    ],
+  },
+  showcase: {
+    id: 'showcase',
+    label: '✨ 内容展示',
+    title: '我的个人作品与灵感展示板',
+    columns: ['灵感草稿', '打磨中', '已发布精选'],
+    cards: [
+      { id: 's1', text: '零基础 AI 入门系列视频选题', tag: '选题', col: 0 },
+      { id: 's2', text: '《2026 效率工具清单》图文排版', tag: '专栏', col: 1 },
+      { id: 's3', text: '个人零代码网页小工具合集', tag: '作品', col: 2 },
+    ],
+  },
+}
+
 export const VIBE_PROJECTS = [
+  {
+    id: 'board',
+    name: '个人看板（排期/分析/展示）',
+    emoji: '📊',
+    tagline: '工作排期、产品分析、作品展示一板搞定',
+    defaultTitle: '本周个人工作排期看板',
+    realPrompt: (cfg) =>
+      `请帮我写一个单文件 HTML 个人看板网页，主题是“${cfg.title}”。\n风格要求：${cfg.themeName}配色，简洁现代卡片风，电脑和手机都能清晰查看。\n功能要求：\n1. 顶部展示关键统计数字（总条目、进行中、完成进度条）；\n2. 主体分为 3 列：${(cfg.columns || ['待办', '进行中', '已完成']).join(' / ')}；\n3. 支持随时新增卡片、一键把卡片移到下一列、删除卡片；\n4. 所有修改自动保存在浏览器 localStorage 里，刷新不丢失！\n请直接输出完整单文件 HTML 代码，我保存后双击就能长期使用。`,
+  },
   {
     id: 'wheel',
     name: '今天吃什么大转盘',
@@ -83,6 +130,105 @@ export function generateStandaloneHTML(projectId, cfg, theme) {
   const safeTitle = escapeHtml(cfg.title)
   const isDark = theme.id === 'cyber'
   const borderCol = isDark ? '#F43F5E' : '#1E1B2E'
+
+  if (projectId === 'board') {
+    const colsJson = safeJsonForScript(cfg.columns || ['待办事项', '进行中', '已完成'])
+    const cardsJson = safeJsonForScript(cfg.cards || [])
+    return `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>${safeTitle}</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:${theme.bg}; color:${theme.text}; padding:24px; }
+    .wrap { max-width:1040px; margin:0 auto; }
+    .top { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; }
+    h1 { margin:0; font-size:26px; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+    .stat { background:${theme.card}; border:2px solid ${borderCol}; box-shadow:4px 4px 0 ${borderCol}; border-radius:16px; padding:14px 16px; }
+    .stat .num { font-size:26px; font-weight:900; color:${theme.accent}; }
+    .stat .lbl { font-size:12px; opacity:.75; font-weight:700; }
+    .addbar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    input, select { padding:10px 12px; border-radius:12px; border:2px solid #cbd5e1; font-size:14px; }
+    input { flex:1; min-width:200px; }
+    button { cursor:pointer; font-size:13px; font-weight:800; padding:10px 16px; border-radius:12px; border:2px solid #1E1B2E; background:${theme.accent}; color:#fff; box-shadow:2px 2px 0 #1E1B2E; }
+    .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+    .col { background:${theme.card}; border:2px solid ${borderCol}; box-shadow:5px 5px 0 ${borderCol}; border-radius:18px; padding:16px; }
+    .col h2 { margin:0 0 12px; font-size:15px; display:flex; justify-content:space-between; }
+    .card { background:${theme.bg}; border:1.5px solid ${borderCol}; border-radius:12px; padding:10px 12px; margin-bottom:10px; }
+    .card-top { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:14px; font-weight:700; }
+    .card-ops { display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:12px; }
+    .tag { padding:2px 8px; border-radius:999px; background:${theme.card}; border:1px solid ${theme.accent}; color:${theme.accent}; font-weight:800; font-size:11px; }
+    .mini { padding:4px 8px; font-size:11px; box-shadow:none; }
+    .del { background:transparent; color:${theme.text}; border:none; box-shadow:none; opacity:.6; padding:2px 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <h1>📊 ${safeTitle}</h1>
+      <div style="font-size:12px;opacity:.75;font-weight:700;">数据自动保存在本机浏览器</div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="addbar">
+      <input id="inp" placeholder="输入新事项 / 分析要点 / 展示内容..." />
+      <select id="colSel"></select>
+      <button type="button" id="addBtn">+ 添加卡片</button>
+    </div>
+    <div class="cols" id="board"></div>
+  </div>
+  <script>
+    const KEY = 'ai_personal_board_' + encodeURIComponent(${safeJsonForScript(cfg.title)});
+    const cols = ${colsJson};
+    let cards = [];
+    try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); cards = Array.isArray(s) ? s : ${cardsJson}; } catch { cards = ${cardsJson}; }
+    const colSel = document.getElementById('colSel');
+    cols.forEach((c, i) => { const o = document.createElement('option'); o.value = i; o.textContent = c; colSel.appendChild(o); });
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(cards)); } catch {} }
+    function render() {
+      const done = cards.filter(c => c.col === 2).length;
+      const pct = cards.length ? Math.round((done / cards.length) * 100) : 0;
+      document.getElementById('stats').innerHTML =
+        '<div class="stat"><div class="lbl">总卡片数</div><div class="num">' + cards.length + '</div></div>' +
+        '<div class="stat"><div class="lbl">' + cols[1] + '</div><div class="num">' + cards.filter(c => c.col === 1).length + '</div></div>' +
+        '<div class="stat"><div class="lbl">' + cols[2] + '占比</div><div class="num">' + pct + '%</div></div>';
+      const wrap = document.getElementById('board');
+      wrap.innerHTML = '';
+      cols.forEach((colName, ci) => {
+        const box = document.createElement('div'); box.className = 'col';
+        const list = cards.filter(c => c.col === ci);
+        const h = document.createElement('h2'); h.textContent = colName + ' (' + list.length + ')'; box.appendChild(h);
+        list.forEach(item => {
+          const el = document.createElement('div'); el.className = 'card';
+          const top = document.createElement('div'); top.className = 'card-top';
+          const txt = document.createElement('span'); txt.textContent = item.text; top.appendChild(txt);
+          const del = document.createElement('button'); del.className = 'del'; del.textContent = '×';
+          del.onclick = () => { cards = cards.filter(c => c.id !== item.id); save(); render(); };
+          top.appendChild(del); el.appendChild(top);
+          const ops = document.createElement('div'); ops.className = 'card-ops';
+          const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = item.tag || '事项'; ops.appendChild(tag);
+          const mv = document.createElement('button'); mv.className = 'mini'; mv.textContent = ci < 2 ? '→ ' + cols[ci + 1] : '↺ 回到第1列';
+          mv.onclick = () => { item.col = (item.col + 1) % 3; save(); render(); };
+          ops.appendChild(mv); el.appendChild(ops);
+          box.appendChild(el);
+        });
+        wrap.appendChild(box);
+      });
+    }
+    document.getElementById('addBtn').onclick = () => {
+      const inp = document.getElementById('inp'); const v = inp.value.trim();
+      if (!v) return;
+      cards.push({ id: 'c_' + Date.now(), text: v, tag: '新增', col: Number(colSel.value) || 0 });
+      inp.value = ''; save(); render();
+    };
+    document.getElementById('inp').onkeydown = (e) => { if (e.key === 'Enter') document.getElementById('addBtn').click(); };
+    render();
+  </script>
+</body>
+</html>`
+  }
 
   if (projectId === 'wheel') {
     const itemsJson = safeJsonForScript(cfg.items)

@@ -84,7 +84,7 @@ export function Chapter1Brain({ isCompleted, onComplete, onNext }) {
 
       {/* ELI5 Core */}
       <Eli5Box
-        badge="ELI5 核心真相"
+        badge="核心真相"
         title="大语言模型（LLM）= 读过海量文字的“超级词语接龙高手”"
         accent="#FF6B57"
         what="平时我们聊天的 ChatGPT、Claude、DeepSeek 等大语言模型，核心本领是通过海量阅读统计语言规律，根据你前面给的内容，一步步预测“下一个最合理的词元（Token）”。现代 AI 还加上了人类反馈训练和工具调用，但“逐词预测”依然是它的底子。"

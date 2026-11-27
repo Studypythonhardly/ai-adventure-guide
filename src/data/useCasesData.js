@@ -13,6 +13,17 @@ export const USE_CASE_CATEGORIES = [
 export const USE_CASES = [
   // ==================== 职场办公 ====================
   {
+    id: 'personal_dashboard',
+    category: 'work',
+    emoji: '📊',
+    title: '3 分钟用 AI 定制个人看板（工作排期 / 产品分析 / 内容展示）',
+    pain: '日程、产品分析要点、作品链接散落在微信收藏和各种文档里，汇报或复盘时总找不到重点。',
+    timeCompare: '以前手搭 Notion 半天 ➔ 现在 3 分钟出专属网页',
+    wowProof: '把你的核心指标、分组列名和原始清单发给 AI，它直接写出带统计进度条、可拖拽/流转卡片、数据自动保存在本机的单文件 HTML 个人看板！',
+    tools: ['Claude', 'DeepSeek', 'Trae / Cursor'],
+    prompt: '请帮我写一个单文件 HTML 个人看板网页，用于[工作排期 / 产品分析 / 个人作品展示]。\n要求：\n1. 顶部放 3 个核心统计卡片与进度条；\n2. 主体分为 3 列：[例如：待办 / 进行中 / 已完成]；\n3. 支持新增卡片、一键切换状态列、按标签筛选，所有改动自动存进浏览器 localStorage 不丢失。\n这是我的初始内容，请直接帮我填进去：[粘贴你的零散清单]',
+  },
+  {
     id: 'weekly_report',
     category: 'work',
     emoji: '📝',

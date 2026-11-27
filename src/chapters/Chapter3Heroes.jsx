@@ -166,7 +166,7 @@ export function Chapter3Heroes({ isCompleted, onComplete, onNext }) {
                 </p>
 
                 <p className="text-xs sm:text-sm text-[#45405C] leading-relaxed">
-                  <strong>🧸 ELI5 形象：</strong>
+                  <strong>🧸 形象比喻：</strong>
                   {hero.eli5}
                 </p>
 
