@@ -61,45 +61,45 @@ export function UseCaseLibrary() {
   return (
     <div className="space-y-7 animate-pop">
       {/* Compact Header */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3.5 pb-1">
         <span
-          className="w-12 h-12 rounded-2xl bg-[#FEF6E4] border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] flex items-center justify-center text-2xl"
+          className="w-10 h-10 rounded-lg bg-[#F7F7F8] border border-[#E4E4E7] flex items-center justify-center font-mono text-xs font-semibold text-[#52525B] shrink-0"
           aria-hidden="true"
         >
-          🧰
+          {USE_CASES.length}
         </span>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">
-            AI 实战案例库 ({USE_CASES.length})
+          <h1 className="font-display text-2xl sm:text-3xl font-semibold text-[#0A0A0A]">
+            AI 实战案例库
           </h1>
         </div>
       </div>
 
       {/* Sticky Search + Filters */}
-      <section className="sticky top-[68px] z-20 card-playful p-3.5 sm:p-4 bg-[#FFFBF5]/95 backdrop-blur space-y-3">
+      <section className="sticky top-[68px] z-20 rounded-xl border border-[#E4E4E7] p-3.5 sm:p-4 bg-white/95 backdrop-blur space-y-3">
         <div className="flex flex-col md:flex-row gap-3">
           <div className="relative flex-1">
             <label htmlFor="case-search" className="sr-only">
               搜索实战案例
             </label>
-            <Search className="w-4 h-4 text-[#6B6685] absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
+            <Search className="w-4 h-4 text-[#71717A] absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
             <input
               id="case-search"
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="搜你想解决的事（如：周报、合同、Excel、体检、旅游、买手机、辅导作业、猫）..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-[#1E1B2E]/25 bg-[#FFFBF5] text-sm font-medium focus:outline-none focus:border-[#5B4BFF]"
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-[#E4E4E7] bg-[#F7F7F8] text-sm text-[#0A0A0A] placeholder:text-[#71717A] focus:outline-none focus:border-[#0A0A0A] focus:bg-white transition-colors"
             />
           </div>
           <button
             type="button"
             onClick={() => setOnlyFavs((v) => !v)}
             aria-pressed={onlyFavs}
-            className={`px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-black inline-flex items-center justify-center gap-1.5 cursor-pointer shrink-0 transition-colors transition-transform ${
+            className={`px-4 py-2 rounded-lg border text-xs sm:text-sm font-medium inline-flex items-center justify-center gap-1.5 cursor-pointer shrink-0 transition-colors ${
               onlyFavs
-                ? 'bg-[#B45309] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
-                : 'bg-white text-[#1E1B2E] border-[#1E1B2E]/25 hover:border-[#1E1B2E]'
+                ? 'bg-[#0A0A0A] text-white border-[#0A0A0A]'
+                : 'bg-white text-[#52525B] border-[#E4E4E7] hover:border-[#0A0A0A] hover:text-[#0A0A0A]'
             }`}
           >
             <Star className={`w-4 h-4 ${onlyFavs ? 'fill-current' : ''}`} aria-hidden="true" />
@@ -107,17 +107,17 @@ export function UseCaseLibrary() {
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-2" role="group" aria-label="场景分类">
+        <div className="flex flex-wrap gap-1.5" role="group" aria-label="场景分类">
           {USE_CASE_CATEGORIES.map((cat) => (
             <button
               type="button"
               key={cat.id}
               onClick={() => setCategory(cat.id)}
               aria-pressed={category === cat.id}
-              className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 cursor-pointer transition-colors transition-transform ${
+              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium border cursor-pointer transition-colors ${
                 category === cat.id
-                  ? 'bg-[#5B4BFF] text-white border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]'
-                  : 'bg-[#FFFBF5] text-[#1E1B2E] border-[#1E1B2E]/15 hover:border-[#1E1B2E]'
+                  ? 'bg-[#0A0A0A] text-white border-[#0A0A0A]'
+                  : 'bg-[#F7F7F8] text-[#52525B] border-transparent hover:border-[#D4D4D8] hover:text-[#0A0A0A]'
               }`}
             >
               {cat.label}

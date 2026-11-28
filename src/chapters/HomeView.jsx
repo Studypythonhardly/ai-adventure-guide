@@ -1,7 +1,7 @@
 import { CHAPTERS } from '../data/courseData'
 import { USE_CASES } from '../data/useCasesData'
 import { AiActionAnimations } from '../components/AiActionAnimations'
-import { Play, CheckCircle2, ArrowRight, Trophy } from 'lucide-react'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
 
 export function HomeView({ completedChapters, onNavigate, xp, levelInfo }) {
   const learningChapters = CHAPTERS.filter((c) => c.id !== 'home')
@@ -9,74 +9,62 @@ export function HomeView({ completedChapters, onNavigate, xp, levelInfo }) {
   const nextChapter = learningChapters.find((c) => !completedChapters.includes(c.id)) || learningChapters[0]
 
   return (
-    <div className="space-y-7 animate-pop">
-      {/* Compact, Punchy Hero Banner */}
-      <section className="card-playful p-6 sm:p-8 bg-gradient-to-br from-[#EEF0FF] via-[#FFFFFF] to-[#FFF0ED] relative overflow-hidden">
-        <div className="max-w-2xl lg:pr-44 relative z-10">
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-[#1E1B2E] leading-[1.22]">
-            从 0 开始，像玩游戏一样
-            <span className="inline-block bg-[#5B4BFF] text-white px-3 py-0.5 rounded-xl mx-1.5 -rotate-1 border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E]">
-              搞懂 AI
-            </span>
+    <div className="space-y-12 animate-pop">
+      {/* Gallery Monochrome Editorial Hero (Direction B — Mintlify / Stripe Docs elegance) */}
+      <section className="pb-10 border-b border-[#E4E4E7]">
+        <div className="max-w-2xl space-y-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7F7F8] border border-[#E4E4E7] text-xs font-medium text-[#52525B]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#059669]" aria-hidden="true" />
+            <span>6 节交互式课程 · {USE_CASES.length} 个真实工作与生活实例</span>
+          </div>
+
+          <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-[#0A0A0A] leading-[1.16]">
+            从零开始，系统理解并真正用好 AI
           </h1>
 
-          <p className="mt-4 text-sm sm:text-base text-[#45405C] leading-relaxed">
-            没有晦涩公式，用 6 个互动关卡 + {USE_CASES.length} 个实战案例：拆解大模型原理、围观黎曼猜想与 3D 鹈鹕、挑对 AI 工具，最后零代码亲手做出可下载的网页作品。
+          <p className="text-base sm:text-lg text-[#52525B] leading-relaxed">
+            告别晦涩术语。通过动手实验拆解大模型原理、复盘前沿突破、理清主流工具选型，并亲手用自然语言打造可独立运行的个人看板与网页工具。
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={() => onNavigate(nextChapter.id)}
-              className="btn-playful px-6 py-3 rounded-2xl bg-[#5B4BFF] text-white font-black text-sm sm:text-base inline-flex items-center gap-2 cursor-pointer"
+              className="px-6 py-3 rounded-lg bg-[#0A0A0A] hover:bg-[#27272A] text-white font-semibold text-sm inline-flex items-center gap-2 cursor-pointer transition-colors"
             >
-              <Play className="w-4 h-4 fill-current" aria-hidden="true" />
               <span>
                 {doneCount === 0
-                  ? '开始冒险：第 1 关'
+                  ? '开始第 01 课'
                   : doneCount < learningChapters.length
-                  ? `继续冒险：第 ${nextChapter.number} 关`
-                  : '重温第 1 关'}
+                  ? `继续第 ${nextChapter.number} 课`
+                  : '重新浏览第 01 课'}
               </span>
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </button>
 
             <button
               type="button"
               onClick={() => onNavigate('cases')}
-              className="btn-playful px-5 py-3 rounded-2xl bg-[#FEF6E4] text-[#1E1B2E] font-extrabold text-sm sm:text-base inline-flex items-center gap-2 cursor-pointer hover:bg-[#FDE68A]"
+              className="px-5 py-3 rounded-lg bg-white hover:bg-[#F7F7F8] text-[#0A0A0A] border border-[#D4D4D8] hover:border-[#0A0A0A] font-semibold text-sm inline-flex items-center gap-2 cursor-pointer transition-colors"
             >
-              <span>🧰 AI 实战案例库 ({USE_CASES.length})</span>
+              <span>浏览实战案例库 ({USE_CASES.length})</span>
             </button>
           </div>
         </div>
-
-        {/* Playful floating robot on desktop */}
-        <div
-          className="hidden lg:flex flex-col items-center justify-center absolute right-10 top-1/2 -translate-y-1/2 select-none"
-          aria-hidden="true"
-        >
-          <div className="text-7xl animate-float">🤖</div>
-        </div>
       </section>
 
-      {/* Formal Interactive Workflow Demo */}
+      {/* 6-Second Real Input-to-Output Live Demos */}
       <AiActionAnimations onNavigate={onNavigate} />
 
-      {/* Adventure Map */}
-      <section aria-labelledby="roadmap-heading">
-        <div className="flex items-center justify-between mb-4">
-          <h2 id="roadmap-heading" className="text-xl sm:text-2xl font-black text-[#1E1B2E]">
-            🗺️ {learningChapters.length} 关漫游路线图
+      {/* Clean Architectural Chapter Index */}
+      <section aria-labelledby="roadmap-heading" className="space-y-5">
+        <div className="flex items-baseline justify-between flex-wrap gap-2">
+          <h2 id="roadmap-heading" className="font-display text-2xl font-bold tracking-tight text-[#0A0A0A]">
+            课程目录
           </h2>
-          {doneCount === learningChapters.length ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#10B981] text-white text-xs font-extrabold badge-pill">
-              <Trophy className="w-4 h-4" aria-hidden="true" /> 全部通关
-            </span>
-          ) : (
-            <span className="text-xs font-extrabold text-[#595470]">
-              {levelInfo.emoji} {levelInfo.title} · {doneCount}/{learningChapters.length} 关 · {xp} XP
-            </span>
-          )}
+          <span className="text-xs font-medium text-[#71717A] tabular-nums">
+            {levelInfo.title} · 已完成 {doneCount}/{learningChapters.length} · {xp} XP
+          </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -87,40 +75,33 @@ export function HomeView({ completedChapters, onNavigate, xp, levelInfo }) {
                 type="button"
                 key={ch.id}
                 onClick={() => onNavigate(ch.id)}
-                className="card-playful card-playful-hover p-5 text-left flex flex-col justify-between cursor-pointer group"
-                style={{ backgroundColor: done ? '#F0FDF4' : '#FFFFFF' }}
+                className="card-playful card-playful-hover p-5 text-left flex flex-col justify-between cursor-pointer group bg-white"
               >
-                <div>
-                  <div className="flex items-center justify-between mb-2.5">
-                    <span
-                      className="inline-flex items-center justify-center w-11 h-11 rounded-2xl text-2xl border-2 border-[#1E1B2E] shadow-[2px_2px_0_#1E1B2E]"
-                      style={{ backgroundColor: ch.bgLight }}
-                      aria-hidden="true"
-                    >
-                      {ch.emoji}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-[#F7F7F8] text-[#52525B] border border-[#E4E4E7]">
+                      {ch.number}
                     </span>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-black px-2.5 py-0.5 rounded-full bg-[#F3F4F6] text-[#1E1B2E] border border-[#1E1B2E]/20">
-                        第 {ch.number} 关
-                      </span>
-                      {done && <CheckCircle2 className="w-5 h-5 text-[#10B981]" aria-label="已通关" />}
-                    </div>
+                    {done && (
+                      <CheckCircle2 className="w-4 h-4 text-[#059669]" aria-label="已完成" />
+                    )}
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-black text-[#1E1B2E] group-hover:text-[#5B4BFF] transition-colors">
-                    {ch.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#595470] mt-1 leading-relaxed">{ch.subtitle}</p>
+                  <div>
+                    <h3 className="text-base font-semibold text-[#0A0A0A] group-hover:text-[#059669] transition-colors">
+                      {ch.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#52525B] mt-1.5 leading-relaxed">
+                      {ch.subtitle}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-[#1E1B2E]/10 flex items-center justify-between text-xs font-extrabold">
-                  <span style={{ color: ch.color }}>
-                    +{ch.xp} XP · {ch.badge?.emoji} {ch.badge?.name}
+                <div className="mt-5 pt-3 border-t border-[#F4F4F5] flex items-center justify-between text-xs text-[#71717A]">
+                  <span className="font-mono">+{ch.xp} XP</span>
+                  <span className="inline-flex items-center gap-1 font-medium text-[#0A0A0A] group-hover:translate-x-0.5 transition-transform">
+                    {done ? '回顾' : '进入'} <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                   </span>
-                  <ArrowRight
-                    className="w-4 h-4 text-[#1E1B2E] group-hover:translate-x-1 transition-transform"
-                    aria-hidden="true"
-                  />
                 </div>
               </button>
             )

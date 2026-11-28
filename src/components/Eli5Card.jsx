@@ -3,39 +3,30 @@ import { CheckCircle2, Circle, Lock, XCircle } from 'lucide-react'
 import { getChapter } from '../lib/progress'
 
 /**
- * ELI5 三段式讲解卡片：
- * 1. 一句话懂它 (What)  2. 生活小比喻 (Analogy)  3. 跟我有啥关系 (So What)
+ * 三段式结构化核心卡片：一句话懂它 / 生活比喻 / 与你的关系
  */
-export function Eli5Box({ badge = '一分钟秒懂', title, what, analogy, soWhat, accent = '#5B4BFF' }) {
+export function Eli5Box({ badge = '一分钟秒懂', title, what, analogy, soWhat }) {
   return (
-    <div className="card-playful p-5 sm:p-6 relative overflow-hidden">
-      {title ? (
-        <h2 className="text-lg sm:text-xl font-black text-[#1E1B2E] mb-3 flex items-center gap-2">
-          <span className="w-2 h-5 rounded-full shrink-0" style={{ backgroundColor: accent }} aria-hidden="true" />
-          <span>{title}</span>
-        </h2>
-      ) : (
-        <h2 className="text-base sm:text-lg font-black text-[#1E1B2E] mb-3 flex items-center gap-2">
-          <span className="w-2 h-4 rounded-full shrink-0" style={{ backgroundColor: accent }} aria-hidden="true" />
-          <span>{badge}</span>
-        </h2>
-      )}
+    <div className="card-playful p-5 sm:p-6 bg-white space-y-4">
+      <h2 className="font-display text-lg sm:text-xl font-bold tracking-tight text-[#0A0A0A]">
+        {title || badge}
+      </h2>
 
-      <div className="space-y-3 text-sm sm:text-base leading-relaxed">
-        <div className="p-3.5 rounded-xl bg-[#FFFBF5] border-2 border-[#1E1B2E]/15">
-          <span className="font-extrabold text-[#1E1B2E]">🎯 一句话懂它：</span>
-          <span className="text-[#37334D]">{what}</span>
+      <div className="grid grid-cols-1 gap-2.5 text-sm leading-relaxed">
+        <div className="p-3.5 rounded-lg bg-[#F7F7F8] border border-[#E4E4E7]">
+          <span className="font-semibold text-[#0A0A0A]">核心定义：</span>
+          <span className="text-[#3F3F46]">{what}</span>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-[#EEF0FF]/70 border-2 border-[#5B4BFF]/25">
-          <span className="font-extrabold text-[#3A2EDB]">🧸 生活小比喻：</span>
-          <span className="text-[#2D2A40]">{analogy}</span>
+        <div className="p-3.5 rounded-lg bg-[#F7F7F8] border border-[#E4E4E7]">
+          <span className="font-semibold text-[#0A0A0A]">生活比喻：</span>
+          <span className="text-[#3F3F46]">{analogy}</span>
         </div>
 
         {soWhat && (
-          <div className="p-3.5 rounded-xl bg-[#E8FBF3]/80 border-2 border-[#10B981]/30">
-            <span className="font-extrabold text-[#047857]">✨ 跟你有什么关系：</span>
-            <span className="text-[#1F3A31]">{soWhat}</span>
+          <div className="p-3.5 rounded-lg bg-[#ECFDF5]/60 border border-[#A7F3D0]">
+            <span className="font-semibold text-[#065F46]">实用意义：</span>
+            <span className="text-[#064E3B]">{soWhat}</span>
           </div>
         )}
       </div>
@@ -46,7 +37,7 @@ export function Eli5Box({ badge = '一分钟秒懂', title, what, analogy, soWha
 /**
  * 单选小测验。答对后调用 onPass；答错可重选。
  */
-export function CheckpointQuiz({ quiz, onPass, passed, title = '🧠 通关小测' }) {
+export function CheckpointQuiz({ quiz, onPass, passed, title = '通关小测' }) {
   const [chosen, setChosen] = useState(passed ? quiz.correct : null)
   const answered = chosen !== null
   const isCorrect = chosen === quiz.correct
@@ -58,11 +49,11 @@ export function CheckpointQuiz({ quiz, onPass, passed, title = '🧠 通关小�
   }
 
   return (
-    <section className="card-playful p-5 sm:p-6 space-y-3" aria-labelledby={`${quiz.id}-title`}>
-      <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#FEF6E4] text-[#92400E] text-xs font-black border border-[#F59E0B]/40">
+    <section className="card-playful p-5 sm:p-6 space-y-4 bg-white" aria-labelledby={`${quiz.id}-title`}>
+      <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#F7F7F8] text-[#52525B] text-xs font-medium border border-[#E4E4E7]">
         {title}
       </span>
-      <h2 id={`${quiz.id}-title`} className="font-black text-base sm:text-lg text-[#1E1B2E]">
+      <h2 id={`${quiz.id}-title`} className="font-semibold text-base sm:text-lg text-[#0A0A0A]">
         {quiz.question}
       </h2>
       <div className="space-y-2" role="group" aria-label="选项">
@@ -76,17 +67,17 @@ export function CheckpointQuiz({ quiz, onPass, passed, title = '🧠 通关小�
               type="button"
               onClick={() => handlePick(idx)}
               aria-pressed={selected}
-              className={`w-full text-left px-4 py-2.5 rounded-xl border-2 text-xs sm:text-sm font-bold cursor-pointer transition-colors transition-transform flex items-center justify-between gap-2 ${
+              className={`w-full text-left px-4 py-3 rounded-lg border text-xs sm:text-sm font-medium cursor-pointer transition-colors flex items-center justify-between gap-2 ${
                 right
-                  ? 'bg-[#E8FBF3] border-[#10B981] text-[#065F46]'
+                  ? 'bg-[#ECFDF5] border-[#059669] text-[#065F46]'
                   : wrong
-                  ? 'bg-[#FFF0ED] border-[#FF6B57] text-[#9A3412]'
-                  : 'bg-[#FFFBF5] border-[#1E1B2E]/15 text-[#37334D] hover:border-[#1E1B2E]'
+                  ? 'bg-[#FEF2F2] border-[#DC2626] text-[#991B1B]'
+                  : 'bg-white border-[#E4E4E7] text-[#27272A] hover:border-[#0A0A0A] hover:bg-[#FAFAFA]'
               }`}
             >
               <span>{opt}</span>
-              {right && <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" aria-hidden="true" />}
-              {wrong && <XCircle className="w-4 h-4 text-[#FF6B57] shrink-0" aria-hidden="true" />}
+              {right && <CheckCircle2 className="w-4 h-4 text-[#059669] shrink-0" aria-hidden="true" />}
+              {wrong && <XCircle className="w-4 h-4 text-[#DC2626] shrink-0" aria-hidden="true" />}
             </button>
           )
         })}
@@ -94,13 +85,13 @@ export function CheckpointQuiz({ quiz, onPass, passed, title = '🧠 通关小�
       <div aria-live="polite">
         {answered && (
           <p
-            className={`text-xs sm:text-sm p-3 rounded-xl border ${
+            className={`text-xs sm:text-sm p-3 rounded-lg border ${
               isCorrect
-                ? 'bg-[#E8FBF3] border-[#10B981] text-[#065F46]'
-                : 'bg-[#FFF0ED] border-[#FF6B57] text-[#9A3412]'
+                ? 'bg-[#ECFDF5] border-[#A7F3D0] text-[#065F46]'
+                : 'bg-[#FEF2F2] border-[#FECACA] text-[#991B1B]'
             }`}
           >
-            <strong>{isCorrect ? '✅ 答对了！' : '❌ 再想想，可以重新选～'}</strong>{' '}
+            <strong>{isCorrect ? '回答正确。' : '还差一点，可以重新选择。'}</strong>{' '}
             {isCorrect && quiz.feedback}
           </p>
         )}
@@ -110,7 +101,7 @@ export function CheckpointQuiz({ quiz, onPass, passed, title = '🧠 通关小�
 }
 
 /**
- * 吸顶页内快速定位条：一眼看清本关包含哪些板块，点击即刻平滑滚动到对应区域。
+ * 极简画廊风吸顶页内快速定位条
  */
 export function SectionJumpBar({ items = [], missions = [], isCompleted = false }) {
   const scrollToSection = (id) => {
@@ -121,14 +112,14 @@ export function SectionJumpBar({ items = [], missions = [], isCompleted = false 
   const doneCount = isCompleted ? missions.length : missions.filter((m) => m.done).length
 
   return (
-    <div className="sticky top-[68px] z-20 -mx-1 px-3 py-2 rounded-xl bg-[#FBF9F5]/95 backdrop-blur border border-[#1A1A24]/10 shadow-[0_1px_2px_rgba(26,26,36,0.05)] flex flex-wrap items-center justify-between gap-2 no-print">
+    <div className="sticky top-[68px] z-20 px-3 py-2 rounded-xl bg-white/95 backdrop-blur border border-[#E4E4E7] shadow-sm flex flex-wrap items-center justify-between gap-2 no-print">
       <div className="flex flex-wrap items-center gap-1.5">
         {items.map((item) => (
           <button
             key={item.id}
             type="button"
             onClick={() => scrollToSection(item.id)}
-            className="px-2.5 py-1 rounded-xl bg-white hover:bg-[#EEF0FF] border border-[#1E1B2E]/20 hover:border-[#1E1B2E] text-xs font-extrabold text-[#1E1B2E] cursor-pointer transition-colors"
+            className="px-3 py-1 rounded-lg bg-[#F7F7F8] hover:bg-[#0A0A0A] hover:text-white text-xs font-medium text-[#27272A] cursor-pointer transition-colors"
           >
             {item.label}
           </button>
@@ -138,13 +129,13 @@ export function SectionJumpBar({ items = [], missions = [], isCompleted = false 
         <button
           type="button"
           onClick={() => scrollToSection('chapter-footer')}
-          className={`px-2.5 py-1 rounded-full text-[11px] font-black border cursor-pointer shrink-0 ${
+          className={`px-2.5 py-1 rounded-md text-[11px] font-semibold border cursor-pointer shrink-0 transition-colors tabular-nums ${
             doneCount === missions.length
-              ? 'bg-[#E8FBF3] text-[#047857] border-[#10B981]'
-              : 'bg-[#FEF6E4] text-[#92400E] border-[#F59E0B]'
+              ? 'bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]'
+              : 'bg-[#F7F7F8] text-[#52525B] border-[#E4E4E7] hover:border-[#0A0A0A]'
           }`}
         >
-          {doneCount === missions.length ? '✅ 任务完成' : `任务 ${doneCount}/${missions.length}`}
+          {doneCount === missions.length ? '已完成全部任务' : `任务 ${doneCount}/${missions.length}`}
         </button>
       )}
     </div>
@@ -152,8 +143,7 @@ export function SectionJumpBar({ items = [], missions = [], isCompleted = false 
 }
 
 /**
- * 关卡底部：任务清单 + 打卡按钮 + 下一关。
- * missions: [{ id, label, done }]，全部完成才能打卡通关。
+ * 关卡底部：任务清单 + 打卡按钮 + 下一课
  */
 export function ChapterFooterNav({ chapterId, isCompleted, onComplete, nextLabel, onNext, missions = [] }) {
   const xpReward = getChapter(chapterId)?.xp ?? 0
@@ -164,26 +154,26 @@ export function ChapterFooterNav({ chapterId, isCompleted, onComplete, nextLabel
   return (
     <section
       id="chapter-footer"
-      className="mt-10 scroll-mt-32 card-playful p-5 sm:p-6 bg-gradient-to-r from-[#EEF0FF] via-[#FFFBF5] to-[#FEF6E4] space-y-4"
-      aria-label="本关任务与打卡"
+      className="mt-10 scroll-mt-32 rounded-xl bg-[#F7F7F8] border border-[#E4E4E7] p-5 sm:p-6 space-y-4"
+      aria-label="本课任务与打卡"
     >
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-        <div className="space-y-2">
-          <h2 className="text-sm font-black text-[#5B4BFF]">
+        <div className="space-y-2.5">
+          <h2 className="text-sm font-semibold text-[#0A0A0A]">
             {isCompleted
-              ? '✅ 本关已通关'
-              : `🎯 本关任务（${doneCount}/${missions.length}）· +${xpReward} XP`}
+              ? '本课已完成'
+              : `本课互动任务（${doneCount}/${missions.length}）· 完成后可获 +${xpReward} XP`}
           </h2>
           {missions.length > 0 && (
             <ul className="space-y-1.5">
               {missions.map((m) => (
                 <li key={m.id} className="flex items-start gap-2 text-xs sm:text-sm">
                   {m.done || isCompleted ? (
-                    <CheckCircle2 className="w-4 h-4 mt-0.5 text-[#10B981] shrink-0" aria-hidden="true" />
+                    <CheckCircle2 className="w-4 h-4 mt-0.5 text-[#059669] shrink-0" aria-hidden="true" />
                   ) : (
-                    <Circle className="w-4 h-4 mt-0.5 text-[#6B6685] shrink-0" aria-hidden="true" />
+                    <Circle className="w-4 h-4 mt-0.5 text-[#A1A1AA] shrink-0" aria-hidden="true" />
                   )}
-                  <span className={m.done || isCompleted ? 'text-[#047857] font-bold' : 'text-[#45405C]'}>
+                  <span className={m.done || isCompleted ? 'text-[#065F46] font-medium' : 'text-[#52525B]'}>
                     {m.label}
                     <span className="sr-only">{m.done || isCompleted ? '（已完成）' : '（未完成）'}</span>
                   </span>
@@ -192,25 +182,25 @@ export function ChapterFooterNav({ chapterId, isCompleted, onComplete, nextLabel
             </ul>
           )}
         </div>
-        <div className="flex flex-wrap items-center gap-3 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
           {!isCompleted && (
             <button
               type="button"
               onClick={() => onComplete(chapterId)}
               disabled={!canComplete}
-              className="btn-playful px-5 py-2.5 rounded-xl bg-[#10B981] text-white font-extrabold text-sm cursor-pointer inline-flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-5 py-2.5 rounded-lg bg-[#059669] hover:bg-[#047857] text-white font-semibold text-sm cursor-pointer inline-flex items-center gap-1.5 transition-colors disabled:opacity-45 disabled:cursor-not-allowed"
             >
-              {canComplete ? '🎉' : <Lock className="w-4 h-4" aria-hidden="true" />}
-              打卡通关 (+{xpReward} XP)
+              {!canComplete && <Lock className="w-3.5 h-3.5" aria-hidden="true" />}
+              <span>完成打卡 (+{xpReward} XP)</span>
             </button>
           )}
           {onNext && (
             <button
               type="button"
               onClick={onNext}
-              className="btn-playful px-5 py-2.5 rounded-xl bg-[#5B4BFF] text-white font-extrabold text-sm cursor-pointer"
+              className="px-5 py-2.5 rounded-lg bg-[#0A0A0A] hover:bg-[#27272A] text-white font-semibold text-sm cursor-pointer transition-colors"
             >
-              {nextLabel || '下一关 →'}
+              {nextLabel || '下一课 →'}
             </button>
           )}
         </div>

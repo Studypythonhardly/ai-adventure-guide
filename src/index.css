@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --bg-canvas: #FBF9F5;
+  --bg-canvas: #FFFFFF;
   --bg-surface: #FFFFFF;
-  --bg-subtle: #F4F1EA;
-  --ink-primary: #1A1A24;
-  --ink-secondary: #525066;
-  --ink-muted: #78758C;
-  --accent: #4338CA;
-  --accent-hover: #3730A3;
-  --accent-soft: #EEF2FF;
+  --bg-subtle: #F7F7F8;
+  --ink-primary: #0A0A0A;
+  --ink-secondary: #52525B;
+  --ink-muted: #71717A;
+  --accent: #0A0A0A;
+  --accent-hover: #27272A;
+  --accent-soft: #F4F4F5;
+  --accent-brand: #059669;
   --ok: #059669;
   --warn: #D97706;
   --danger: #DC2626;
-  --border-subtle: rgba(26, 26, 36, 0.10);
-  --border-strong: rgba(26, 26, 36, 0.22);
-  --shadow-sm: 0 1px 2px rgba(26, 26, 36, 0.05);
-  --shadow-md: 0 6px 20px rgba(26, 26, 36, 0.06);
+  --border-subtle: #E4E4E7;
+  --border-strong: #18181B;
+  --shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.04);
+  --shadow-md: 0 8px 24px rgba(10, 10, 10, 0.06);
 }
 
 html,
@@ -33,47 +34,60 @@ body {
 
   /* 高对比度选中样式：浅底与深底代码块上都清晰可读 */
   ::selection {
-    background-color: var(--accent);
+    background-color: #0A0A0A;
     color: #FFFFFF;
   }
+
+  pre::selection,
+  pre ::selection,
+  [class*="bg-[#1E1B2E]"] ::selection,
+  [class*="bg-[#0F172A]"] ::selection,
+  [class*="bg-[#0A0A0A]"] ::selection {
+    background-color: #FFFFFF;
+    color: #0A0A0A;
+  }
+}
+
+.font-display {
+  font-family: "Songti SC", "Noto Serif SC", Georgia, Cambria, "Times New Roman", serif;
+  letter-spacing: -0.02em;
 }
 
 .card-playful {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle) !important;
-  box-shadow: var(--shadow-sm) !important;
-  border-radius: 0.9rem;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: none !important;
+  border-radius: 0.75rem;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
 }
 
 .card-playful-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  border-color: #D4D4D8 !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md) !important;
 }
 
 .btn-playful {
-  border: 1px solid var(--border-strong) !important;
-  box-shadow: var(--shadow-sm) !important;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease, color 0.15s ease;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: none !important;
+  transition: transform 0.12s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
 .btn-playful:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
 
 .btn-playful:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: var(--shadow-sm);
 }
 
 .badge-pill {
   border: 1px solid var(--border-subtle) !important;
-  box-shadow: var(--shadow-sm) !important;
+  box-shadow: none !important;
 }
 
 .font-black {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .font-extrabold {
@@ -81,13 +95,13 @@ body {
 }
 
 :where(button, a, input, textarea, select):focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  outline: 2px solid #0A0A0A;
   outline-offset: 2px;
 }
 
 /* Custom range slider */
 input[type="range"] {
-  accent-color: #5B4BFF;
+  accent-color: #0A0A0A;
 }
 
 @keyframes floatSlow {

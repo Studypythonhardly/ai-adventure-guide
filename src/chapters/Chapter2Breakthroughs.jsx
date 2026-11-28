@@ -42,14 +42,14 @@ export function Chapter2Breakthroughs({ isCompleted, onComplete, onNext }) {
   return (
     <div className="space-y-8 animate-pop">
       {/* Header */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3.5 pb-1">
         <span
-          className="w-12 h-12 rounded-2xl bg-[#FEF6E4] border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] flex items-center justify-center text-2xl"
+          className="w-10 h-10 rounded-lg bg-[#F7F7F8] border border-[#E4E4E7] flex items-center justify-center font-mono text-xs font-semibold text-[#52525B] shrink-0"
           aria-hidden="true"
         >
-          🏆
+          02
         </span>
-        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">02 · AI 已经牛到什么地步了？</h1>
+        <h1 className="font-display text-2xl sm:text-3xl font-semibold text-[#0A0A0A]">AI 已经牛到什么地步了？</h1>
       </div>
 
       <SectionJumpBar

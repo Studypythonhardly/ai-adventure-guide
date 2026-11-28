@@ -71,26 +71,26 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
   return (
     <div className="space-y-6 animate-pop">
       {/* Header */}
-      <div className="flex items-center gap-3 no-print">
+      <div className="flex items-center gap-3.5 pb-1 no-print">
         <span
-          className="w-12 h-12 rounded-2xl bg-[#E8F6FE] border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] flex items-center justify-center text-2xl"
+          className="w-10 h-10 rounded-lg bg-[#F7F7F8] border border-[#E4E4E7] flex items-center justify-center font-mono text-xs font-semibold text-[#52525B] shrink-0"
           aria-hidden="true"
         >
-          🎓
+          06
         </span>
-        <h1 className="text-2xl sm:text-3xl font-black text-[#1E1B2E]">06 · AI 黑话翻译局 & 毕业典礼</h1>
+        <h1 className="font-display text-2xl sm:text-3xl font-semibold text-[#0A0A0A]">AI 黑话翻译局 & 毕业典礼</h1>
       </div>
 
-      {/* 3-Tab Switcher (No more endless scrolling past 19 glossary cards!) */}
+      {/* 3-Tab Switcher */}
       <div
-        className="sticky top-[68px] z-20 p-1.5 rounded-2xl bg-[#FFFBF5]/95 backdrop-blur border-2 border-[#1E1B2E] shadow-[3px_3px_0_#1E1B2E] grid grid-cols-3 gap-1.5 no-print"
+        className="sticky top-[68px] z-20 p-1 rounded-xl bg-white/95 backdrop-blur border border-[#E4E4E7] grid grid-cols-3 gap-1 no-print"
         role="tablist"
         aria-label="第 6 关内容切换"
       >
         {[
-          { id: 'glossary', label: `📖 黑话词典 (${GLOSSARY_TERMS.length})` },
-          { id: 'safety', label: `🛡️ 防坑法则 (${SAFETY_RULES.length})` },
-          { id: 'grad', label: isCompleted ? '🏆 毕业证书 ✓' : '🎓 毕业考 & 领证' },
+          { id: 'glossary', label: `黑话词典 (${GLOSSARY_TERMS.length})` },
+          { id: 'safety', label: `防坑法则 (${SAFETY_RULES.length})` },
+          { id: 'grad', label: isCompleted ? '毕业证书 ✓' : '毕业考 & 领证' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -98,10 +98,10 @@ export function Chapter6Glossary({ isCompleted, onComplete, nickname = '', setNi
             role="tab"
             aria-selected={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-black cursor-pointer transition-colors transition-transform ${
+            className={`py-2 px-3 rounded-lg text-xs sm:text-sm font-medium cursor-pointer transition-colors ${
               activeTab === tab.id
-                ? 'bg-[#1E1B2E] text-white shadow-[2px_2px_0_#0EA5E9]'
-                : 'bg-white text-[#1E1B2E] hover:bg-[#EEF0FF]'
+                ? 'bg-[#0A0A0A] text-white'
+                : 'bg-transparent text-[#52525B] hover:bg-[#F7F7F8] hover:text-[#0A0A0A]'
             }`}
           >
             {tab.label}

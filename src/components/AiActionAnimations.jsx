@@ -107,7 +107,7 @@ export function AiActionAnimations({ onNavigate }) {
     <section className="card-playful p-5 sm:p-6 space-y-4 bg-white">
       {/* Top Bar: Tabs + Replay */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap gap-2" role="tablist" aria-label="AI 实例演示">
+        <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="AI 实例演示">
           {DEMOS.map((d, idx) => (
             <button
               key={d.id}
@@ -115,10 +115,10 @@ export function AiActionAnimations({ onNavigate }) {
               role="tab"
               aria-selected={demoIdx === idx}
               onClick={() => handleSelectDemo(idx)}
-              className={`px-3.5 py-2 rounded-xl border-2 text-xs sm:text-sm font-black cursor-pointer transition-colors transition-transform ${
+              className={`px-3 py-1.5 rounded-lg border text-xs sm:text-sm font-medium cursor-pointer transition-colors ${
                 demoIdx === idx
-                  ? 'bg-[#1E1B2E] text-white border-[#1E1B2E] shadow-[2px_2px_0_#5B4BFF]'
-                  : 'bg-[#FFFBF5] text-[#1E1B2E] border-[#1E1B2E]/20 hover:border-[#1E1B2E]'
+                  ? 'bg-[#0A0A0A] text-white border-[#0A0A0A]'
+                  : 'bg-[#F7F7F8] text-[#52525B] border-transparent hover:border-[#D4D4D8] hover:text-[#0A0A0A]'
               }`}
             >
               {d.tab}
@@ -129,7 +129,7 @@ export function AiActionAnimations({ onNavigate }) {
         <button
           type="button"
           onClick={handleReplay}
-          className="px-3 py-1.5 rounded-xl bg-[#FFFBF5] hover:bg-[#EEF0FF] border-2 border-[#1E1B2E]/25 text-xs font-black text-[#1E1B2E] inline-flex items-center gap-1 cursor-pointer"
+          className="px-3 py-1.5 rounded-lg bg-white hover:bg-[#F7F7F8] border border-[#E4E4E7] text-xs font-medium text-[#52525B] hover:text-[#0A0A0A] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
         >
           <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
           <span>重播 6 秒过程</span>
@@ -137,9 +137,9 @@ export function AiActionAnimations({ onNavigate }) {
       </div>
 
       {/* 6-second Live Playback Bar */}
-      <div className="h-1.5 w-full bg-[#F3F4F6] rounded-full overflow-hidden">
+      <div className="h-1 w-full bg-[#F4F4F5] rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#5B4BFF] transition-colors transition-transform duration-100"
+          className="h-full bg-[#059669] transition-[width] duration-100"
           style={{ width: `${progressPct}%` }}
         />
       </div>
@@ -147,15 +147,15 @@ export function AiActionAnimations({ onNavigate }) {
       {/* Split Live Stage: Left = What Human Gives | Right = What AI Produces */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
         {/* LEFT: Human Input */}
-        <div className="lg:col-span-5 p-4 rounded-2xl bg-[#FFFBF5] border-2 border-[#1E1B2E]/15 flex flex-col justify-between space-y-3">
+        <div className="lg:col-span-5 p-4 rounded-xl bg-[#F7F7F8] border border-[#E4E4E7] flex flex-col justify-between space-y-3">
           <div className="space-y-3">
-            <div className="text-xs font-black text-[#595470]">🧑 你发给 AI 的原话</div>
+            <div className="text-xs font-medium text-[#71717A]">你发给 AI 的原话</div>
 
             {/* Typing chat bubble */}
-            <div className="p-3.5 rounded-2xl bg-white border-2 border-[#1E1B2E] text-sm font-bold text-[#1E1B2E] leading-relaxed min-h-[76px]">
+            <div className="p-3.5 rounded-lg bg-white border border-[#E4E4E7] text-sm font-medium text-[#0A0A0A] leading-relaxed min-h-[76px]">
               {typedInput}
               {elapsedMs < 1750 && (
-                <span className="inline-block w-0.5 h-4 bg-[#5B4BFF] ml-0.5 align-middle animate-pulse" />
+                <span className="inline-block w-0.5 h-4 bg-[#0A0A0A] ml-0.5 align-middle animate-pulse" />
               )}
             </div>
 
